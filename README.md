@@ -3,9 +3,9 @@ Propuesta Proyecto Final
 
 Nuestro proyecto final consiste en crear una inteligencia artificial basada en los videojuegos del género de Tower Defense. El proyecto va a ser un Tower Defense al estilo Bloons TD, con una generación aleatoria del mundo en cada partida que se comience, con una serie de torres aliadas que el usuario podrá colocar en unos lugares correspondientes, cada una con sus respectivas características, stats y daño, que se encargarán de defenderse de enemigos, que tendrán también sus características propias. El objetivo de estos será llegar al final del camino y el nuestro será eliminar a todos los enemigos, antes de que lleguen al final y logren ganar. Al ser tres integrantes en este proyecto, vamos a diferenciar claramente el trabajo de cada uno:
 
-![](Aspose.Words.cfa8f7d0-1d85-4db2-9dea-500dcd16ec8a.001.png)
+![](./images/1.png)
 
-![](Aspose.Words.cfa8f7d0-1d85-4db2-9dea-500dcd16ec8a.002.png)
+![](./images/2.png)
 
 - David Rodríguez Gómez: Encargado de hacer una generación de mundo aleatoria. Para ello se va a disponer el escenario en casillas, y cada una será guardada en un array de dos dimensiones. Cada tipo de casilla tendrá un valor correspondiente (por ejemplo, valores de 0 para entrada y salida, 1 para camino transitable, 2 para los lugares que se coloquen las torres, y 3 camino no transitable). El mapa va a tener un tamaño fijo de casillas, pero en cada run del juego puede haber más o menos casillas transitables, con la posibilidad de poder colocar más torres o menos. Al principio habrá únicamente un camino de entrada a salida (como idea hacer más de un camino posible, para que la IA de los enemigos pueda demostrar más su capacidad). A su vez, cada casilla tendría un valor correspondiente de paso, para que la IA de los enemigos pueda elegir el camino más rápido.
 - Manuel Adeliño Consuegra: se encargará de la lógica de las torres, ya que cada torre podrá tener distintos comportamientos, el primero de ellos será atacar al enemigo que esté más cercano a la salida, el segundo será atacar al enemigo más fuerte que se encuentre en su zona y el último comportamiento sería atacar al enemigo que esté más lejos de la salida. En principio habrá un tipo de torre que será polivalente:

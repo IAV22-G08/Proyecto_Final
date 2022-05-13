@@ -21,7 +21,8 @@ public class GeneracionMapa : MonoBehaviour
     private int index;
     private int nextIndex;
 
-    public Color color;
+    public Mesh mesh;
+    public Material mat1, mat2;
 
     private List<GameObject> getBordeSuperior()
     {
@@ -45,6 +46,28 @@ public class GeneracionMapa : MonoBehaviour
 
         return casillasBorde;
     }
+    private List<GameObject> getBordeIzq()
+    {
+        List<GameObject> casillasBorde = new List<GameObject>();
+        int x = 0;
+        while (x < anchoMapa * altoMapa)
+        {
+            casillasBorde.Add(casillasMapa[x]);
+            x = x + anchoMapa;
+        }
+        return casillasBorde;
+    }
+    private List<GameObject> getBordeDer()
+    {
+        List<GameObject> casillasBorde = new List<GameObject>();
+        int x = anchoMapa-1;
+        while (x < anchoMapa * altoMapa)
+        {
+            casillasBorde.Add(casillasMapa[x]);
+            x = x + anchoMapa;
+        }
+        return casillasBorde;
+    }
     private void generaMapa()
     {
         for (int i=0; i < anchoMapa; i++)
@@ -58,6 +81,8 @@ public class GeneracionMapa : MonoBehaviour
         }
         List<GameObject> casillasArriba = getBordeSuperior();
         List<GameObject> casillasAbajo = getBordeInferior();
+        List<GameObject> casillasIzq = getBordeIzq();
+        List<GameObject> casillasDer = getBordeDer();
 
         GameObject inicio;
         GameObject final;
@@ -65,8 +90,19 @@ public class GeneracionMapa : MonoBehaviour
         int rand1 = Random.Range(0, anchoMapa);
         int rand2 = Random.Range(0, anchoMapa);
 
-        inicio = casillasArriba[rand1];
-        final = casillasAbajo[rand2];
+        int tipoMapa = Random.Range(0, 2);
+        if (tipoMapa == 0)
+        {
+            inicio = casillasArriba[rand1];
+            final = casillasAbajo[rand2];
+        }
+        else
+        {
+            inicio = casillasDer[rand1];
+            final = casillasIzq[rand2];
+        }
+
+
 
         casillaActual = inicio;
         moveDown();
@@ -110,10 +146,27 @@ public class GeneracionMapa : MonoBehaviour
             }
         }
         casillasCamino.Add(final);
+        int iterations = 0;
         foreach (GameObject obj in casillasCamino)
         {
-            Destroy(obj);
-            //obj.GetComponent<Renderer>().material.color = color;
+            if (obj==casillasCamino[0])
+            {
+                obj.GetComponent<MeshFilter>().mesh = mesh;
+                obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                obj.GetComponent<Renderer>().material=mat1;
+            }
+            else if (obj == casillasCamino[casillasCamino.Count-1])
+            {
+                obj.GetComponent<MeshFilter>().mesh = mesh;
+                obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                obj.GetComponent<Renderer>().material = mat2;
+            }
+            else
+            {
+                obj.GetComponent<MeshFilter>().mesh = mesh;
+                obj.transform.Translate(new Vector3(0.5f, 0, 0));
+            }
+
         }
         for (int l = -1; l < altoMapa + 1; l++)
         {
@@ -123,6 +176,7 @@ public class GeneracionMapa : MonoBehaviour
                     GameObject nuevoBorde = Instantiate(casillaMapa);
                     nuevoBorde.transform.position = new Vector3(l, 0, k);
                     nuevoBorde.GetComponent<Renderer>().material.color = Color.black;
+
                 }
             }
             else

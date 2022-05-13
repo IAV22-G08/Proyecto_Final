@@ -166,10 +166,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5d60c4f45806a341a80ce9163a88c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  casillaMapa: {fileID: 8512824756170863792, guid: 73d005125d3da624b9ed29c1c24d5322, type: 3}
+  casillaMapa: {fileID: 133888, guid: 859703c8656c02b4b95ff71d43c2f3ea, type: 3}
   anchoMapa: 15
   altoMapa: 15
-  color: {r: 0.8584906, g: 0.15711991, b: 0.15711991, a: 0}
+  mesh: {fileID: 4300002, guid: 3ca31ed2b2305b049855746cd6e2106f, type: 3}
+  mat1: {fileID: 2100000, guid: f10a44ee01d6fc5468b5d0dde374dfda, type: 2}
+  mat2: {fileID: 2100000, guid: 62a5ffc64f82fe645a21ae07e0f05174, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

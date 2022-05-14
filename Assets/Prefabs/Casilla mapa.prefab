@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2122239438406942764}
   - component: {fileID: 3620090094837180310}
   - component: {fileID: 6733275206109662914}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Casilla mapa
   m_TagString: Untagged
   m_Icon: {fileID: 0}

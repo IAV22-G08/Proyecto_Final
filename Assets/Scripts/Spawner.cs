@@ -18,14 +18,14 @@ public class Spawner : MonoBehaviour
             StartCoroutine(Spawn());
             timer = cooldown;
         }
-        Debug.Log("Timer: " + timer);
+        //Debug.Log("Timer: " + timer);
         timer -= Time.deltaTime;
     }
 
     IEnumerator Spawn()
     {
         waveIndex++;
-        Debug.Log("Spawning...");
+        //Debug.Log("Spawning...");
 
         for (int i = 0; i < waveIndex; i++)
         {

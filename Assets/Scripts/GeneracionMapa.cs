@@ -5,19 +5,26 @@ using UnityEngine;
 public class GeneracionMapa : MonoBehaviour
 {
     public GameObject casillaMapa;
+    public GameObject inicioPrefab;
+    public GameObject exitPrefab;
+    public GameObject spawnerPrefab;
+    public GameObject waypoints;
+    public GameObject waypointsList;
 
     [SerializeField]
     private int anchoMapa;
     [SerializeField]
     private int altoMapa;
 
-    private List<GameObject> casillasCamino=new List<GameObject>();
-    private List<GameObject> casillasMapa=new List<GameObject>();
+    private List<GameObject> casillasCamino = new List<GameObject>();
+    private List<GameObject> casillasMapa = new List<GameObject>();
     private List<GameObject> casillasBorde = new List<GameObject>();
 
     private bool x = false;
     private bool y = false;
     private GameObject casillaActual;
+    private GameObject casillaIncio;
+    private GameObject casillaExit;
     private int index;
     private int nextIndex;
 
@@ -28,7 +35,7 @@ public class GeneracionMapa : MonoBehaviour
     {
         List<GameObject> casillasBorde = new List<GameObject>();
 
-        for (int x= anchoMapa * (altoMapa - 1); x < anchoMapa * altoMapa; x++)
+        for (int x = anchoMapa * (altoMapa - 1); x < anchoMapa * altoMapa; x++)
         {
             casillasBorde.Add(casillasMapa[x]);
         }
@@ -60,7 +67,7 @@ public class GeneracionMapa : MonoBehaviour
     private List<GameObject> getBordeDer()
     {
         List<GameObject> casillasBorde = new List<GameObject>();
-        int x = anchoMapa-1;
+        int x = anchoMapa - 1;
         while (x < anchoMapa * altoMapa)
         {
             casillasBorde.Add(casillasMapa[x]);
@@ -70,7 +77,7 @@ public class GeneracionMapa : MonoBehaviour
     }
     private void generaMapa()
     {
-        for (int i=0; i < anchoMapa; i++)
+        for (int i = 0; i < anchoMapa; i++)
         {
             for (int j = 0; j < altoMapa; j++)
             {
@@ -109,27 +116,25 @@ public class GeneracionMapa : MonoBehaviour
         int contX = 0;
         int contY = 0;
 
-        while (!x||!y)
+        while (!x || !y)
         {
             int number = Random.Range(0, 2);
-            if (!x&&number==0)
+            if (!x && number == 0)
             {
                 if (casillaActual.transform.position.z > final.transform.position.z)
                 {
                     moveLeft();
-
                 }
                 else if (casillaActual.transform.position.z < final.transform.position.z)
                 {
                     moveRight();
-
                 }
                 else
                 {
                     x = true;
                 }
             }
-            else if (!y&&number==1)
+            else if (!y && number == 1)
             {
                 if (casillaActual.transform.position.x > final.transform.position.x)
                 {
@@ -149,17 +154,34 @@ public class GeneracionMapa : MonoBehaviour
         int iterations = 0;
         foreach (GameObject obj in casillasCamino)
         {
-            if (obj==casillasCamino[0])
+            if (obj == casillasCamino[0])
             {
-                obj.GetComponent<MeshFilter>().mesh = mesh;
-                obj.transform.Translate(new Vector3(0.5f, 0, 0));
-                obj.GetComponent<Renderer>().material=mat1;
+                Vector3 pos = casillasCamino[0].transform.position;
+                Destroy(casillasCamino[0]);
+                casillaIncio = Instantiate(inicioPrefab);
+                casillasMapa.Add(casillaIncio);
+                casillaIncio.transform.position = pos;
+
+                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                Instantiate(spawnerPrefab, a, transform.rotation);
+                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+                //obj.GetComponent<MeshFilter>().mesh = mesh;
+                //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                //obj.GetComponent<Renderer>().material = mat1;
             }
-            else if (obj == casillasCamino[casillasCamino.Count-1])
+            else if (obj == casillasCamino[casillasCamino.Count - 1])
             {
-                obj.GetComponent<MeshFilter>().mesh = mesh;
-                obj.transform.Translate(new Vector3(0.5f, 0, 0));
-                obj.GetComponent<Renderer>().material = mat2;
+                Vector3 pos = casillasCamino[casillasCamino.Count - 1].transform.position;
+                Destroy(casillasCamino[casillasCamino.Count - 1]);
+                casillaExit = Instantiate(exitPrefab);
+                casillasMapa.Add(casillaExit);
+                casillaExit.transform.position = pos;
+
+                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+                //obj.GetComponent<MeshFilter>().mesh = mesh;
+                //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                //obj.GetComponent<Renderer>().material = mat2;
             }
             else
             {
@@ -168,11 +190,18 @@ public class GeneracionMapa : MonoBehaviour
             }
 
         }
+
+        casillasCamino[0] = casillaIncio;
+        casillasCamino[casillasCamino.Count - 1] = casillaExit;
+        casillasCamino[0].transform.Translate(0, -0.5f, 0);
+        casillasCamino[casillasCamino.Count - 1].transform.Translate(0, -0.5f, 0);
+
         for (int l = -1; l < altoMapa + 1; l++)
         {
             if (l == -1 || l == altoMapa)
             {
-                for (int k=-1; k < anchoMapa+1; k++) {
+                for (int k = -1; k < anchoMapa + 1; k++)
+                {
                     GameObject nuevoBorde = Instantiate(casillaMapa);
                     nuevoBorde.transform.position = new Vector3(l, 0, k);
                     nuevoBorde.GetComponent<Renderer>().material.color = Color.black;
@@ -194,6 +223,7 @@ public class GeneracionMapa : MonoBehaviour
     void Start()
     {
         generaMapa();
+        waypointsList.GetComponent<Waypoints>().LeerWaypoints();
     }
 
     private void moveUp()

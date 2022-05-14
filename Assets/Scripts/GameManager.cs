@@ -23,50 +23,50 @@ public class GameManager : MonoBehaviour
     }
 
 
-    [SerializeField]
-    GameObject particles;
+
+    //public GameObject particles;
 
     GameObject casillaSeleccionada;
 
     public void setCasillaSeleccionada(GameObject casilla)
     {
-        //hay que hacer que la actual casilla seleccionada vuelva a ser una normal y luego poner esta como seleccionada
-        if(casillaSeleccionada != null && casilla != null)
-        {
-            casillaSeleccionada.GetComponent<MeshRenderer>().enabled = true;
-            //particles.transform.position = casillaSeleccionada.transform.position;
-            
-        }
-        if(casilla != null)
-        {
-            //particles.SetActive(true);
-            casillaSeleccionada = casilla;
-            casillaSeleccionada.GetComponent<MeshRenderer>().enabled = false;
-            //particles.transform.position = casillaSeleccionada.transform.position;
 
+        GameObject.FindGameObjectsWithTag("Particulas")[0].GetComponentInChildren<ParticleSystem>().Play();
+
+        //si hay alguna seleccionada devolver la anterior a la normlaidad 
+        if (casillaSeleccionada != null)
+        {
+            casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.green;
         }
+
+        //remarcar la nueva
+        casillaSeleccionada = casilla;
+        casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.grey;
+        GameObject.FindGameObjectsWithTag("Particulas")[0].transform.position = casillaSeleccionada.transform.position;
+
+
 
     }
 
 
     public void deseleccionarCasilla()
     {
+        GameObject.FindGameObjectsWithTag("Particulas")[0].GetComponentInChildren<ParticleSystem>().Stop();
         if (casillaSeleccionada != null)
         {
-            //particles.SetActive(false);
+            casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.green;
 
-            casillaSeleccionada.GetComponent<MeshRenderer>().enabled = true;
         }
         casillaSeleccionada = null;
     }
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

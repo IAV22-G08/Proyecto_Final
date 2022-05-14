@@ -17,7 +17,6 @@ public class Selectable : MonoBehaviour
             {
                 Debug.Log("seleccionado");
                 GameManager.Instance.setCasillaSeleccionada(rayHit.collider.gameObject);
-                //rayHit.collider.GetComponent<MeshRenderer>().enabled = false;
             }
             else
             {

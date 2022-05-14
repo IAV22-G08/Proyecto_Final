@@ -140,15 +140,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 474550, guid: 859703c8656c02b4b95ff71d43c2f3ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.175293
+      value: 13.63
       objectReference: {fileID: 0}
     - target: {fileID: 474550, guid: 859703c8656c02b4b95ff71d43c2f3ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.746913
+      value: 1.5799999
       objectReference: {fileID: 0}
     - target: {fileID: 474550, guid: 859703c8656c02b4b95ff71d43c2f3ea, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.530809
+      value: 2.4599998
       objectReference: {fileID: 0}
     - target: {fileID: 474550, guid: 859703c8656c02b4b95ff71d43c2f3ea, type: 3}
       propertyPath: m_LocalRotation.w
@@ -286,7 +286,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261447114}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 15
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -5264,7 +5264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879ec6c1a4a978e4cb4841bebafc6957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particles: {fileID: 0}
 --- !u!4 &1061586831
 Transform:
   m_ObjectHideFlags: 0
@@ -5347,7 +5346,7 @@ GameObject:
   - component: {fileID: 1610881842}
   m_Layer: 0
   m_Name: Particles
-  m_TagString: Untagged
+  m_TagString: Particulas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5360,7 +5359,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610881841}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.175293, y: 3.746913, z: -9.530809}
+  m_LocalPosition: {x: 13.63, y: 1.58, z: 2.46}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 261447115}

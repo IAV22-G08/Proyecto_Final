@@ -15,7 +15,6 @@ public class Selectable : MonoBehaviour
 
             if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out rayHit,Mathf.Infinity, selectableLayer))
             {
-                Debug.Log("seleccionado");
                 GameManager.Instance.setCasillaSeleccionada(rayHit.collider.gameObject);
             }
             else

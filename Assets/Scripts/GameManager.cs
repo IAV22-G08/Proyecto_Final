@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                Debug.Log("No hay game manager");
                 GameObject go = new GameObject("GameManager");
                 _instance = go.AddComponent<GameManager>();
             }
@@ -27,7 +26,7 @@ public class GameManager : MonoBehaviour
     //public GameObject particles;
 
     GameObject casillaSeleccionada;
-
+    public GameObject getSelectedCasilla() { return casillaSeleccionada; }
     public void setCasillaSeleccionada(GameObject casilla)
     {
 
@@ -36,6 +35,7 @@ public class GameManager : MonoBehaviour
         //si hay alguna seleccionada devolver la anterior a la normlaidad 
         if (casillaSeleccionada != null)
         {
+            showRadius(false);
             casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.green;
         }
 
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
         casillaSeleccionada = casilla;
         casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.grey;
         GameObject.FindGameObjectsWithTag("Particulas")[0].transform.position = casillaSeleccionada.transform.position;
+        showRadius(true);
 
 
 
@@ -55,10 +56,14 @@ public class GameManager : MonoBehaviour
         if (casillaSeleccionada != null)
         {
             casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.green;
+            showRadius(false);
 
         }
         casillaSeleccionada = null;
     }
+
+
+
     void Start()
     {
 
@@ -68,5 +73,18 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+
+    public void showRadius( bool activar)
+    {
+        Debug.Log("MuestraRadio");
+        if (casillaSeleccionada.transform.childCount > 0)
+        {
+            Debug.Log("MuestraRadioDentro");
+            casillaSeleccionada.GetComponent<LineRenderer>().enabled = activar;
+            casillaSeleccionada.GetComponent<DrawRadius>().enabled = activar;
+        }
+       
     }
 }

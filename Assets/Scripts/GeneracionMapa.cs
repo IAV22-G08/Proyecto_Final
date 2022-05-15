@@ -175,6 +175,11 @@ public class GeneracionMapa : MonoBehaviour
                 Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
                 Instantiate(spawnerPrefab, a, transform.rotation);
                 Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+
+                foreach(GameObject esq in esquinas)
+                {
+                    Instantiate(waypoints, esq.transform.position, transform.rotation, waypointsList.transform);
+                }
                 //obj.GetComponent<MeshFilter>().mesh = mesh;
                 //obj.transform.Translate(new Vector3(0.5f, 0, 0));
                 //obj.GetComponent<Renderer>().material = mat1;

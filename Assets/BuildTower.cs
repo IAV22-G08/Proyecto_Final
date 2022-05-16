@@ -18,7 +18,7 @@ public class BuildTower : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             GameObject selected = GameManager.Instance.getSelectedCasilla();
-            if (selected != null)
+            if (selected != null && selected.transform.childCount == 0)
             {
                 GameObject torre = GameObject.Instantiate(archerTower, selected.transform);
                 torre.transform.position = selected.transform.position;

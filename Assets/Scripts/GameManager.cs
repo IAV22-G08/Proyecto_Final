@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
     public GameObject getSelectedCasilla() { return casillaSeleccionada; }
     public void setCasillaSeleccionada(GameObject casilla)
     {
-
         GameObject.FindGameObjectsWithTag("Particulas")[0].GetComponentInChildren<ParticleSystem>().Play();
 
         //si hay alguna seleccionada devolver la anterior a la normlaidad 
@@ -78,12 +77,10 @@ public class GameManager : MonoBehaviour
 
     public void showRadius( bool activar)
     {
-        Debug.Log("MuestraRadio");
         if (casillaSeleccionada.transform.childCount > 0)
         {
-            Debug.Log("MuestraRadioDentro");
-            casillaSeleccionada.GetComponent<LineRenderer>().enabled = activar;
-            casillaSeleccionada.GetComponent<DrawRadius>().enabled = activar;
+            casillaSeleccionada.transform.GetChild(0).GetComponent<LineRenderer>().enabled = activar;
+            casillaSeleccionada.transform.GetChild(0).GetComponent<DrawRadius>().enabled = activar;
         }
        
     }

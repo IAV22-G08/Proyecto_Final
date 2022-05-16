@@ -6,10 +6,8 @@ public class DrawRadius : MonoBehaviour
 {
     [Range(0, 50)]
     public int segments = 50;
-    [Range(0, 5)]
-    public float xradius = 5;
-    [Range(0, 5)]
-    public float yradius = 5;
+    [Range(0, 20)]
+    public float radius = 20;
     LineRenderer line;
 
     //provisional 
@@ -33,12 +31,18 @@ public class DrawRadius : MonoBehaviour
 
         for (int i = 0; i < (segments + 1); i++)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius;
-            z = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius;
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
+            z = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
 
             line.SetPosition(i, new Vector3(x, posY, z));
 
             angle += (360f / segments);
         }
     }
+
+    public float getRadio()
+    {
+        return radius;
+    }
+
 }

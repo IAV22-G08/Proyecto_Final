@@ -17,10 +17,13 @@ public class GeneracionMapa : MonoBehaviour
     private int altoMapa;
 
     private List<GameObject> casillasCamino = new List<GameObject>();
+    private List<GameObject> casillasCamino2 = new List<GameObject>();
     private List<GameObject> casillasMapa = new List<GameObject>();
     private List<GameObject> casillasBorde = new List<GameObject>();
 
     public List<GameObject> esquinas = new List<GameObject>();
+    public List<GameObject> esquinas2 = new List<GameObject>();
+
 
     private bool x = false;
     private bool y = false;
@@ -159,7 +162,49 @@ public class GeneracionMapa : MonoBehaviour
             }
         }
         casillasCamino.Add(final);
-        int iterations = 0;
+
+        x = false;
+        y = false;
+        casillaActual = inicio;
+
+        if (tipoMapa == 0)
+        {
+            moveDown2();
+
+        }
+        else moveLeft2();
+
+        while (!x)
+        {
+            if (casillaActual.transform.position.z > final.transform.position.z)
+            {
+                moveLeft2();
+            }
+            else if (casillaActual.transform.position.z < final.transform.position.z)
+            {
+                moveRight2();
+            }
+            else
+            {
+                x = true;
+            }
+        }
+        while (!y)
+        {
+            if (casillaActual.transform.position.x > final.transform.position.x)
+            {
+                moveDown2();
+            }
+            else if (casillaActual.transform.position.x < final.transform.position.x)
+            {
+                moveUp2();
+            }
+            else
+            {
+                y = true;
+            }
+        }
+        casillasCamino2.Add(final);
 
         //Cambia la malla del mapa para hacerla camino
         foreach (GameObject obj in casillasCamino)
@@ -206,10 +251,58 @@ public class GeneracionMapa : MonoBehaviour
 
         }
 
+        foreach (GameObject obj in casillasCamino2)
+        {
+            if (obj == casillasCamino2[0])
+            {
+                Vector3 pos = casillasCamino2[0].transform.position;
+                Destroy(casillasCamino2[0]);
+                casillaIncio = Instantiate(inicioPrefab);
+                casillasMapa.Add(casillaIncio);
+                casillaIncio.transform.position = pos;
+
+                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                Instantiate(spawnerPrefab, a, transform.rotation);
+                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+
+                foreach (GameObject esq in esquinas2)
+                {
+                    Instantiate(waypoints, esq.transform.position, transform.rotation, waypointsList.transform);
+                }
+                //obj.GetComponent<MeshFilter>().mesh = mesh;
+                //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                //obj.GetComponent<Renderer>().material = mat1;
+            }
+            else if (obj == casillasCamino2[casillasCamino2.Count - 1])
+            {
+                Vector3 pos = casillasCamino2[casillasCamino2.Count - 1].transform.position;
+                Destroy(casillasCamino2[casillasCamino2.Count - 1]);
+                casillaExit = Instantiate(exitPrefab);
+                casillasMapa.Add(casillaExit);
+                casillaExit.transform.position = pos;
+
+                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+                //obj.GetComponent<MeshFilter>().mesh = mesh;
+                //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                //obj.GetComponent<Renderer>().material = mat2;
+            }
+            else
+            {
+                obj.GetComponent<MeshFilter>().mesh = mesh;
+                obj.transform.Translate(new Vector3(0.5f, 0, 0));
+            }
+
+        }
         casillasCamino[0] = casillaIncio;
         casillasCamino[casillasCamino.Count - 1] = casillaExit;
         casillasCamino[0].transform.Translate(0, -0.5f, 0);
         casillasCamino[casillasCamino.Count - 1].transform.Translate(0, -0.5f, 0);
+
+        casillasCamino2[0] = casillaIncio;
+        casillasCamino2[casillasCamino2.Count - 1] = casillaExit;
+        casillasCamino2[0].transform.Translate(0, -0.5f, 0);
+        casillasCamino2[casillasCamino2.Count - 1].transform.Translate(0, -0.5f, 0);
 
         //Crea y pinta los bordes de negro
         for (int l = -1; l < altoMapa + 1; l++)
@@ -245,7 +338,7 @@ public class GeneracionMapa : MonoBehaviour
     private void moveUp()
     {
         casillasCamino.Add(casillaActual);
-        if (casillasCamino.Count > 2)
+        if (casillasCamino.Count >= 2)
         {
             previo = casillasCamino[casillasCamino.Count - 2];
             GameObject anterior = casillaActual;
@@ -271,7 +364,7 @@ public class GeneracionMapa : MonoBehaviour
     private void moveDown()
     {
         casillasCamino.Add(casillaActual);
-        if (casillasCamino.Count > 2)
+        if (casillasCamino.Count >= 2)
         {
             previo = casillasCamino[casillasCamino.Count - 2];
             GameObject anterior = casillaActual;
@@ -295,7 +388,7 @@ public class GeneracionMapa : MonoBehaviour
     private void moveLeft()
     {
         casillasCamino.Add(casillaActual);
-        if (casillasCamino.Count > 2)
+        if (casillasCamino.Count >= 2)
         {
             previo = casillasCamino[casillasCamino.Count - 2];
             GameObject anterior = casillaActual;
@@ -319,7 +412,7 @@ public class GeneracionMapa : MonoBehaviour
     private void moveRight()
     {
         casillasCamino.Add(casillaActual);
-        if (casillasCamino.Count > 2)
+        if (casillasCamino.Count >= 2)
         {
             previo = casillasCamino[casillasCamino.Count - 2];
 
@@ -344,6 +437,110 @@ public class GeneracionMapa : MonoBehaviour
     public List<GameObject> getEsquinas()
     {
         return esquinas;
+    }
+    public List<GameObject> getEsquinas2()
+    {
+        return esquinas2;
+    }
+
+    private void moveUp2()
+    {
+        casillasCamino2.Add(casillaActual);
+        if (casillasCamino2.Count >= 2)
+        {
+            previo = casillasCamino2[casillasCamino2.Count - 2];
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index + anchoMapa;
+            casillaActual = casillasMapa[nextIndex];
+            if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
+            {
+
+                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " ");
+                esquinas2.Add(anterior);
+            }
+        }
+        else
+        {
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index + anchoMapa;
+            casillaActual = casillasMapa[nextIndex];
+        }
+
+    }
+    private void moveDown2()
+    {
+        casillasCamino2.Add(casillaActual);
+        if (casillasCamino2.Count >= 2)
+        {
+            previo = casillasCamino2[casillasCamino2.Count - 2];
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index - anchoMapa;
+            casillaActual = casillasMapa[nextIndex];
+
+            if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
+            {
+                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
+            }
+        }
+        else
+        {
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index - anchoMapa;
+            casillaActual = casillasMapa[nextIndex];
+        }
+    }
+    private void moveLeft2()
+    {
+        casillasCamino2.Add(casillaActual);
+        if (casillasCamino2.Count >= 2)
+        {
+            previo = casillasCamino2[casillasCamino2.Count - 2];
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index - 1;
+            casillaActual = casillasMapa[nextIndex];
+            if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
+            {
+                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
+            }
+        }
+        else
+        {
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index - 1;
+            casillaActual = casillasMapa[nextIndex];
+        }
+
+    }
+    private void moveRight2()
+    {
+        casillasCamino2.Add(casillaActual);
+        if (casillasCamino2.Count >= 2)
+        {
+            previo = casillasCamino2[casillasCamino2.Count - 2];
+
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index + 1;
+            casillaActual = casillasMapa[nextIndex];
+            if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
+            {
+                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
+            }
+        }
+        else
+        {
+            GameObject anterior = casillaActual;
+            index = casillasMapa.IndexOf(casillaActual);
+            nextIndex = index + 1;
+            casillaActual = casillasMapa[nextIndex];
+        }
+
     }
 }
 

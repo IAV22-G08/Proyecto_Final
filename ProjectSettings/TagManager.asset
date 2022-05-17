@@ -8,6 +8,7 @@ TagManager:
   - Exit
   - Waypoint
   - Particulas
+  - Spawner
   layers:
   - Default
   - TransparentFX

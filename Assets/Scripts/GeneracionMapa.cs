@@ -1,21 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class GeneracionMapa : MonoBehaviour
+public class GeneracionMapa : Graph
 {
+    //Prefabs
     public GameObject casillaMapa;
+    public GameObject floorPrefab;
     public GameObject inicioPrefab;
     public GameObject exitPrefab;
     public GameObject spawnerPrefab;
     public GameObject waypoints;
     public GameObject waypointsList;
 
+    //DatosMapa
     [SerializeField]
     private int anchoMapa;
     [SerializeField]
     private int altoMapa;
 
+    //Listas
     private List<GameObject> casillasCamino = new List<GameObject>();
     private List<GameObject> casillasCamino2 = new List<GameObject>();
     private List<GameObject> casillasMapa = new List<GameObject>();
@@ -24,14 +30,19 @@ public class GeneracionMapa : MonoBehaviour
     public List<GameObject> esquinas = new List<GameObject>();
     public List<GameObject> esquinas2 = new List<GameObject>();
 
+    GameObject[] vertexObjs;
+    bool[,] mapVertices;
+    float defaultCost = 1f;
 
     private bool x = false;
     private bool y = false;
     private GameObject casillaActual;
     private GameObject casillaIncio;
     private GameObject casillaExit;
+    private GameObject casillaFloor;
     private int index;
     private int nextIndex;
+    int casillasCaminables = 0;
 
     private GameObject previo;
 
@@ -82,17 +93,40 @@ public class GeneracionMapa : MonoBehaviour
         }
         return casillasBorde;
     }
+
+    public override void Load()
+    {
+        generaMapa();
+    }
+
+    //MAPA ----------------------------------------------------------------------------
     private void generaMapa()
     {
+        int id = 0;
+
+        vertices = new Vertex[altoMapa * anchoMapa];
+        neighbors = new List<List<Vertex>>(altoMapa * anchoMapa);
+        costs = new List<List<float>>(altoMapa * anchoMapa);
+        vertexObjs = new GameObject[altoMapa * anchoMapa];
+        mapVertices = new bool[altoMapa, anchoMapa];
+
         for (int i = 0; i < anchoMapa; i++)
         {
             for (int j = 0; j < altoMapa; j++)
             {
-                GameObject nuevaCasilla = Instantiate(casillaMapa);
-                casillasMapa.Add(nuevaCasilla);
-                nuevaCasilla.transform.position = new Vector3(i, 0, j);
+                //Debug.Log("Casilla x: " + i + "  y: " + j);
+                id = GridToId(j, i);
+                vertexObjs[id] = Instantiate(casillaMapa);
+                casillasMapa.Add(vertexObjs[id]);
+                vertexObjs[id].transform.position = new Vector3(i, -0.5f, j);
+                Vertex v = vertexObjs[id].AddComponent<Vertex>();
+                v.id = id;
+                vertices[id] = v;
+                neighbors.Add(new List<Vertex>());
+                costs.Add(new List<float>());
             }
         }
+
         List<GameObject> casillasArriba = getBordeSuperior();
         List<GameObject> casillasAbajo = getBordeInferior();
         List<GameObject> casillasIzq = getBordeIzq();
@@ -101,10 +135,10 @@ public class GeneracionMapa : MonoBehaviour
         GameObject inicio;
         GameObject final;
 
-        int rand1 = Random.Range(0, anchoMapa);
-        int rand2 = Random.Range(0, anchoMapa);
+        int rand1 = UnityEngine.Random.Range(0, anchoMapa);
+        int rand2 = UnityEngine.Random.Range(0, anchoMapa);
 
-        int tipoMapa = Random.Range(0, 2);
+        int tipoMapa = UnityEngine.Random.Range(0, 2);
         if (tipoMapa == 0)
         {
             inicio = casillasArriba[rand1];
@@ -129,7 +163,7 @@ public class GeneracionMapa : MonoBehaviour
 
         while (!x || !y)
         {
-            int number = Random.Range(0, 2);
+            int number = UnityEngine.Random.Range(0, 2);
             if (!x && number == 0)
             {
                 if (casillaActual.transform.position.z > final.transform.position.z)
@@ -207,102 +241,174 @@ public class GeneracionMapa : MonoBehaviour
         casillasCamino2.Add(final);
 
         //Cambia la malla del mapa para hacerla camino
+        int index = 0;
         foreach (GameObject obj in casillasCamino)
         {
             if (obj == casillasCamino[0])
             {
-                Vector3 pos = casillasCamino[0].transform.position;
-                Destroy(casillasCamino[0]);
-                casillaIncio = Instantiate(inicioPrefab);
+                mapVertices[(int)casillasCamino[index].transform.position.x, (int)casillasCamino[index].transform.position.z] = true;
+                casillasCaminables++;
+
+                Vector3 pos = casillasCamino[index].transform.position;
+                Destroy(casillasCamino[index]);
+                Debug.Log("GENERA INICIO x: " + pos.x + "   y: " + pos.z);
+                int b = GridToId((int)pos.z, (int)pos.x);
+                Debug.Log("AHA: " + b);
+                vertexObjs[b] = Instantiate(inicioPrefab);
+                casillaIncio = vertexObjs[b];
+                vertexObjs[b].transform.position = pos;
+                Vertex v = vertexObjs[b].AddComponent<Vertex>();
+                v.id = b;
+                vertices[b] = v;
+                Debug.Log("CASILLA INICIO pos: " + vertices[b].transform.position);
                 casillasMapa.Add(casillaIncio);
                 casillaIncio.transform.position = pos;
 
                 Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
                 Instantiate(spawnerPrefab, a, transform.rotation);
-                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+                //Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
 
-                foreach(GameObject esq in esquinas)
-                {
-                    Instantiate(waypoints, esq.transform.position, transform.rotation, waypointsList.transform);
-                }
+                //foreach (GameObject esq in esquinas)
+                //{
+                //    Instantiate(waypoints, esq.transform.position, transform.rotation, waypointsList.transform);
+                //}
                 //obj.GetComponent<MeshFilter>().mesh = mesh;
                 //obj.transform.Translate(new Vector3(0.5f, 0, 0));
                 //obj.GetComponent<Renderer>().material = mat1;
             }
             else if (obj == casillasCamino[casillasCamino.Count - 1])
             {
-                Vector3 pos = casillasCamino[casillasCamino.Count - 1].transform.position;
-                Destroy(casillasCamino[casillasCamino.Count - 1]);
-                casillaExit = Instantiate(exitPrefab);
+                mapVertices[(int)casillasCamino[index].transform.position.x, (int)casillasCamino[index].transform.position.z] = true;
+                casillasCaminables++;
+
+                Vector3 pos = casillasCamino[index].transform.position;
+                Destroy(casillasCamino[index]);
+                Debug.Log("GENERA EXIT x: " + pos.x + "   y: " + pos.z);
+                int b = GridToId((int)pos.z, (int)pos.x);
+                Debug.Log("AHA: " + b);
+                vertexObjs[b] = Instantiate(exitPrefab);
+                casillaExit = vertexObjs[b];
+                vertexObjs[b].transform.position = pos;
+                Vertex v = vertexObjs[b].AddComponent<Vertex>();
+                v.id = b;
+                vertices[b] = v;
+                Debug.Log("CASILLA EXIT pos: " + vertices[b].transform.position);
                 casillasMapa.Add(casillaExit);
                 casillaExit.transform.position = pos;
-
-                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
-                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+                //Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
                 //obj.GetComponent<MeshFilter>().mesh = mesh;
                 //obj.transform.Translate(new Vector3(0.5f, 0, 0));
                 //obj.GetComponent<Renderer>().material = mat2;
             }
             else
             {
-                obj.GetComponent<MeshFilter>().mesh = mesh;
-                obj.transform.Translate(new Vector3(0.5f, 0, 0));
-            }
+                mapVertices[(int)casillasCamino[index].transform.position.x, (int)casillasCamino[index].transform.position.z] = true;
+                casillasCaminables++;
 
+                Vector3 pos = casillasCamino[index].transform.position;
+                Destroy(casillasCamino[index]);
+                Debug.Log("GENERA SUELO x: " + pos.x + "   y: " + pos.z);
+                int b = GridToId((int)pos.z, (int)pos.x);
+                Debug.Log("AHA: " + b);
+                vertexObjs[b] = Instantiate(floorPrefab);
+                casillaFloor = vertexObjs[b];
+                vertexObjs[b].transform.position = pos;
+                Vertex v = vertexObjs[b].AddComponent<Vertex>();
+                v.id = b;
+                vertices[b] = v;
+                Debug.Log("CASILLA SUELO pos: " + vertices[b].transform.position);
+                casillasMapa.Add(casillaFloor);
+                casillaFloor.transform.position = pos;
+
+                //obj.GetComponent<MeshFilter>().mesh = mesh;
+                //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+            }
+            index++;
         }
 
+        index = 0;
         foreach (GameObject obj in casillasCamino2)
         {
             if (obj == casillasCamino2[0])
             {
-                Vector3 pos = casillasCamino2[0].transform.position;
-                Destroy(casillasCamino2[0]);
-                casillaIncio = Instantiate(inicioPrefab);
-                casillasMapa.Add(casillaIncio);
-                casillaIncio.transform.position = pos;
-
-                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
-                Instantiate(spawnerPrefab, a, transform.rotation);
-                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
-
-                foreach (GameObject esq in esquinas2)
+                if (!mapVertices[(int)casillasCamino2[index].transform.position.x, (int)casillasCamino2[index].transform.position.z])
                 {
-                    Instantiate(waypoints, esq.transform.position, transform.rotation, waypointsList.transform);
+                    mapVertices[(int)casillasCamino2[index].transform.position.x, (int)casillasCamino2[index].transform.position.z] = true;
+
+                    Vector3 pos = casillasCamino2[index].transform.position;
+                    Destroy(casillasCamino2[index]);
+                    casillaIncio = Instantiate(inicioPrefab);
+                    casillasMapa.Add(casillaIncio);
+                    casillaIncio.transform.position = pos;
+
+                    Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                    //Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
                 }
+
+                //foreach (GameObject esq in esquinas2)
+                //{
+                //    Instantiate(waypoints, esq.transform.position, transform.rotation, waypointsList.transform);
+                //}
                 //obj.GetComponent<MeshFilter>().mesh = mesh;
                 //obj.transform.Translate(new Vector3(0.5f, 0, 0));
                 //obj.GetComponent<Renderer>().material = mat1;
             }
             else if (obj == casillasCamino2[casillasCamino2.Count - 1])
             {
-                Vector3 pos = casillasCamino2[casillasCamino2.Count - 1].transform.position;
-                Destroy(casillasCamino2[casillasCamino2.Count - 1]);
-                casillaExit = Instantiate(exitPrefab);
-                casillasMapa.Add(casillaExit);
-                casillaExit.transform.position = pos;
+                if (!mapVertices[(int)casillasCamino2[index].transform.position.x, (int)casillasCamino2[index].transform.position.z])
+                {
+                    mapVertices[(int)casillasCamino2[index].transform.position.x, (int)casillasCamino2[index].transform.position.z] = true;
 
-                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
-                Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
-                //obj.GetComponent<MeshFilter>().mesh = mesh;
-                //obj.transform.Translate(new Vector3(0.5f, 0, 0));
-                //obj.GetComponent<Renderer>().material = mat2;
+                    //Vector3 pos = casillasCamino2[index].transform.position;
+                    //Destroy(casillasCamino2[index]);
+                    //casillaExit = Instantiate(exitPrefab);
+                    //casillasMapa.Add(casillaExit);
+                    //casillaExit.transform.position = pos;
+
+                    //Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                    //Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
+                    //obj.GetComponent<MeshFilter>().mesh = mesh;
+                    //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                    //obj.GetComponent<Renderer>().material = mat2;
+                }
             }
             else
             {
-                obj.GetComponent<MeshFilter>().mesh = mesh;
-                obj.transform.Translate(new Vector3(0.5f, 0, 0));
-            }
+                if (!mapVertices[(int)casillasCamino2[index].transform.position.x, (int)casillasCamino2[index].transform.position.z])
+                {
+                    mapVertices[(int)casillasCamino2[index].transform.position.x, (int)casillasCamino2[index].transform.position.z] = true;
+                    casillasCaminables++;
 
+                    Vector3 pos = casillasCamino2[index].transform.position;
+                    Destroy(casillasCamino2[index]);
+                    Debug.Log("GENERA SUELO x: " + pos.x + "   y: " + pos.z);
+                    int b = GridToId((int)pos.z, (int)pos.x);
+                    Debug.Log("AHA: " + b);
+                    vertexObjs[b] = Instantiate(floorPrefab);
+                    casillaFloor = vertexObjs[b];
+                    vertexObjs[b].transform.position = pos;
+                    Vertex v = vertexObjs[b].AddComponent<Vertex>();
+                    v.id = b;
+                    vertices[b] = v;
+                    Debug.Log("CASILLA SUELO pos: " + vertices[b].transform.position);
+                    casillasMapa.Add(casillaFloor);
+                    casillaFloor.transform.position = pos;
+
+                    //obj.GetComponent<MeshFilter>().mesh = mesh;
+                    //obj.transform.Translate(new Vector3(0.5f, 0, 0));
+                }
+            }
+            index++;
         }
+
+        Debug.Log("CASILLAS CAMINABLES : " + casillasCaminables);
         casillasCamino[0] = casillaIncio;
         casillasCamino[casillasCamino.Count - 1] = casillaExit;
-        casillasCamino[0].transform.Translate(0, -0.5f, 0);
-        casillasCamino[casillasCamino.Count - 1].transform.Translate(0, -0.5f, 0);
 
-        casillasCamino2[0] = casillaIncio;
-        casillasCamino2[casillasCamino2.Count - 1] = casillaExit;
-        casillasCamino2[0].transform.Translate(0, -0.5f, 0);
-        casillasCamino2[casillasCamino2.Count - 1].transform.Translate(0, -0.5f, 0);
+        //casillasCamino2[0] = casillaIncio;
+        //casillasCamino2[casillasCamino2.Count - 1] = casillaExit;
+        //casillasCamino2[0].transform.Translate(0, -0.5f, 0);
+        //casillasCamino2[casillasCamino2.Count - 1].transform.Translate(0, -0.5f, 0);
 
         //Crea y pinta los bordes de negro
         for (int l = -1; l < altoMapa + 1; l++)
@@ -327,11 +433,20 @@ public class GeneracionMapa : MonoBehaviour
                 nuevoBorde2.GetComponent<Renderer>().material.color = Color.black;
             }
         }
+
+        for (int i = 0; i < anchoMapa; i++)
+        {
+            for (int j = 0; j < altoMapa; j++)
+            {
+                Debug.Log("Vertice i: " + i + "   j: " + j);
+                SetNeighbours(j, i);
+            }
+        }
     }
     // Start is called before the first frame update
     void Start()
     {
-        generaMapa();
+        Load();
         waypointsList.GetComponent<Waypoints>().LeerWaypoints();
     }
 
@@ -348,7 +463,7 @@ public class GeneracionMapa : MonoBehaviour
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
 
-                Debug.Log(casillaActual.transform.position.z+" "+ previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " ");
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " ");
                 esquinas.Add(anterior);
             }
         }
@@ -374,7 +489,7 @@ public class GeneracionMapa : MonoBehaviour
 
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas.Add(anterior);
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas.Add(anterior);
             }
         }
         else
@@ -397,7 +512,7 @@ public class GeneracionMapa : MonoBehaviour
             casillaActual = casillasMapa[nextIndex];
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas.Add(anterior);
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas.Add(anterior);
             }
         }
         else
@@ -407,7 +522,7 @@ public class GeneracionMapa : MonoBehaviour
             nextIndex = index - 1;
             casillaActual = casillasMapa[nextIndex];
         }
-        
+
     }
     private void moveRight()
     {
@@ -422,7 +537,7 @@ public class GeneracionMapa : MonoBehaviour
             casillaActual = casillasMapa[nextIndex];
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas.Add(anterior);
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas.Add(anterior);
             }
         }
         else
@@ -456,7 +571,7 @@ public class GeneracionMapa : MonoBehaviour
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
 
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " ");
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " ");
                 esquinas2.Add(anterior);
             }
         }
@@ -482,7 +597,7 @@ public class GeneracionMapa : MonoBehaviour
 
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
             }
         }
         else
@@ -505,7 +620,7 @@ public class GeneracionMapa : MonoBehaviour
             casillaActual = casillasMapa[nextIndex];
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
             }
         }
         else
@@ -530,7 +645,7 @@ public class GeneracionMapa : MonoBehaviour
             casillaActual = casillasMapa[nextIndex];
             if (casillaActual.transform.position.z != previo.transform.position.z && casillaActual.transform.position.x != previo.transform.position.x)
             {
-                Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
+                //Debug.Log(casillaActual.transform.position.z + " " + previo.transform.position.z + " " + casillaActual.transform.position.x + " " + previo.transform.position.x + " "); esquinas2.Add(anterior);
             }
         }
         else
@@ -540,7 +655,109 @@ public class GeneracionMapa : MonoBehaviour
             nextIndex = index + 1;
             casillaActual = casillasMapa[nextIndex];
         }
+    }
 
+    // -------------------------------- GRAPH ----------------------------------------
+
+    private int GridToId(int x, int y)
+    {
+        Debug.Log("x: " + x + "   y: " + y);
+        return Math.Max(altoMapa, anchoMapa) * y + x;
+        //De abajo derecha a arriba izquierda
+    }
+
+    protected void SetNeighbours(int x, int y, bool get8 = false)
+    {
+        int col = x;
+        int row = y;
+        int i, j;
+        int vertexId = GridToId(x, y);
+        Debug.Log("ID: " + vertexId);
+        neighbors[vertexId] = new List<Vertex>();
+        costs[vertexId] = new List<float>();
+        Vector2[] pos = new Vector2[0];
+        if (get8)
+        {
+            pos = new Vector2[8];
+            int c = 0;
+            for (i = row - 1; i <= row + 1; i++)
+            {
+                for (j = col - 1; j <= col; j++)
+                {
+                    pos[c] = new Vector2(j, i);
+                    c++;
+                }
+            }
+        }
+        else
+        {
+            pos = new Vector2[4];
+            pos[0] = new Vector2(col, row - 1);
+            pos[1] = new Vector2(col - 1, row);
+            pos[2] = new Vector2(col + 1, row);
+            pos[3] = new Vector2(col, row + 1);
+        }
+        foreach (Vector2 p in pos)
+        {
+            i = (int)p.y;
+            j = (int)p.x;
+            if (i < 0 || j < 0)
+                continue;
+            if (i >= anchoMapa || j >= altoMapa)
+                continue;
+            if (i == row && j == col)
+                continue;
+            if (!mapVertices[i, j])
+                continue;
+            Debug.Log("Vertice EDGE i: " + i + "   j: " + j);
+            int id = GridToId(j, i);
+            neighbors[vertexId].Add(vertices[id]);
+            costs[vertexId].Add(defaultCost);
+        }
+    }
+
+    public override Vertex GetNearestVertex(Vector3 position)
+    {
+        Debug.Log("NV x: " + position.x + "   y: " + position.z);
+        int col = (int)(position.x);
+        int row = (int)(position.z);
+        Vector2 p = new Vector2(col, row);
+        List<Vector2> explored = new List<Vector2>();
+        Queue<Vector2> queue = new Queue<Vector2>();
+        queue.Enqueue(p);
+        do
+        {
+            p = queue.Dequeue();
+            col = (int)p.x;
+            row = (int)p.y;
+            int id = GridToId(row, col);
+            if (mapVertices[col, row])
+            {
+                Debug.Log("ID NearestVertex: " + id);
+                Debug.Log("Position NearestVertex: " + vertices[id].transform.position);
+                return vertices[id];
+            }
+
+            if (!explored.Contains(p))
+            {
+                explored.Add(p);
+                int i, j;
+                for (i = row - 1; i <= row + 1; i++)
+                {
+                    for (j = col - 1; j <= col + 1; j++)
+                    {
+                        if (i < 0 || j < 0)
+                            continue;
+                        if (j >= anchoMapa || i >= altoMapa)
+                            continue;
+                        if (i == row && j == col)
+                            continue;
+                        queue.Enqueue(new Vector2(j, i));
+                    }
+                }
+            }
+        } while (queue.Count != 0);
+        return null;
     }
 }
 

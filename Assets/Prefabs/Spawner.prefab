@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9027929421256796102}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292f81d4a02629e4c89966e622cf1ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5691702812258598758, guid: 270739a575ac41e429d8f0d0c7782b84, type: 3}
-  enemyPrefab2: {fileID: 7159716706633494946, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
+  enemies: []
+  enemyPrefab: {fileID: 5691702812258598760, guid: 270739a575ac41e429d8f0d0c7782b84, type: 3}
+  enemyPrefab2: {fileID: 7159716706633494956, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
+  a: {fileID: 4529166782932340864, guid: 27392d94ffae7cb4a819974c86d4460d, type: 3}
   cooldown: 10

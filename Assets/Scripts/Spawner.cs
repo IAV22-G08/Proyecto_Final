@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
-    public Transform enemyPrefab;
-    public Transform enemyPrefab2;
+    public static List<GameObject> enemies = new List<GameObject>();
+
+    public GameObject enemyPrefab;
+    public GameObject enemyPrefab2;
     public float cooldown = 100f;
 
     private float timer = 2f;
@@ -37,7 +41,10 @@ public class Spawner : MonoBehaviour
     void SpawnEnemy()
     {
         if (waveIndex <= 5)
-            Instantiate(enemyPrefab, transform.position, transform.rotation);
+        {
+            enemies.Add(Instantiate(enemyPrefab,transform.position,transform.rotation));
+            Debug.Log("Enemigos: " + enemies.Count);
+        }
         else
             Instantiate(enemyPrefab2, transform.position, transform.rotation);
     }

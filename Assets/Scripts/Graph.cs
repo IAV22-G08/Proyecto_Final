@@ -195,6 +195,7 @@ public abstract class Graph : MonoBehaviour
                     Debug.Log("Posicion vertice : " + vertice.vertex.transform);
                     Debug.Log("Posicion neigh : " + neigh.vertex.id);
                     Debug.Log("Visita ID: " + nID);
+
                     //AQUI SE CALCULA EL COSTE DE LAS POSICIONES DE LAS TORRETAS
                     //if (vertice.vertex == verticeMinotauro)
                     //{

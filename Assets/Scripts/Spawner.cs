@@ -46,6 +46,9 @@ public class Spawner : MonoBehaviour
             Debug.Log("Enemigos: " + enemies.Count);
         }
         else
-            Instantiate(enemyPrefab2, transform.position, transform.rotation);
+        {
+            enemies.Add(Instantiate(enemyPrefab2, transform.position, transform.rotation));
+            Debug.Log("Enemigos: " + enemies.Count);
+        }
     }
 }

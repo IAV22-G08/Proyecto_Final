@@ -4939,7 +4939,7 @@ GameObject:
   - component: {fileID: 588437571}
   m_Layer: 0
   m_Name: Generador
-  m_TagString: Untagged
+  m_TagString: Generador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4978,6 +4978,7 @@ MonoBehaviour:
   spawnerPrefab: {fileID: 9027929421256796121, guid: dbbaef1af280dc3448c16d9df1523de9, type: 3}
   waypoints: {fileID: 9129071704433319952, guid: bce25365e7c639a44abb48bc6c68aabd, type: 3}
   waypointsList: {fileID: 767974934}
+  objetivoPrefab: {fileID: 3931630695420199467, guid: 0ff64e978c0c8ed48920464ad6d5c643, type: 3}
   anchoMapa: 15
   altoMapa: 15
   esquinas: []
@@ -5256,7 +5257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1390567519
 MonoBehaviour:
   m_ObjectHideFlags: 0

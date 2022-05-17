@@ -5,18 +5,63 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     // MOVIMIENTO POR ASTAR (2 O MAS CAMINOS)
+    public float velocidadMax;
+    Graph grafo;
+
     private Rigidbody rb;
     private Vector3 velocidad;
-    public float velocidadMax;
 
     //Variables cuando se controlaado por la IA
     List<Vertex> camino;
     int indice = 0;
     private Transform casillaPisada;
+    private GameObject inicio;
+    private GameObject salida;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        inicio = GameObject.FindGameObjectWithTag("Inicio");
+        if (inicio == null)
+        {
+            Debug.Log("No pilla Inicio");
+        }
+        else
+        {
+            Debug.Log("Pilla Inicio");
+        }
+
+        salida = GameObject.FindGameObjectWithTag("Exit");
+        if (salida == null)
+        {
+            Debug.Log("No pilla Salida");
+        }
+        else Debug.Log("Pilla Salida");
+
+        grafo = GameObject.FindGameObjectWithTag("Generador").GetComponent<GeneracionMapa>();
+        if (grafo == null)
+        {
+            Debug.Log("No pilla grafo");
+        }
+        Debug.Log("Pilla grafo");
+
+        Debug.Log("Espacio");
+        camino = grafo.GetPathAstar(this.inicio, this.salida, grafo.ManhattanDist);
+        Debug.Log(" AH: " + camino.Count);
+        //if (smoothPath)
+        //{
+        //    Debug.Log("Entra en smooth");
+        //    Line();
+        //}
+        //else
+        //{
+        //    //Dibujar el hilo
+        //    //MostrarCamino(camino, colorCamino);
+        //}
+
+        //Actualizamos el camino en el script de MovimientoJugador
+        ActualizarCaminoSalida(camino);
     }
 
     void Update()
@@ -59,7 +104,7 @@ public class EnemyMovement : MonoBehaviour
     {
         //!kinematic == WASD, casillaPisada==null -> no tiene camino
         if (casillaPisada == null) return;
-        Debug.Log("Movimiento");
+        //Debug.Log("Movimiento");
         Vector3 casPisPos = casillaPisada.position;
         Vector3 teseoPos = transform.position;
         //y=0 para que la distancia que se suma al ser 3D no cuente en el cálculo de las distancias, es decir, la magnitud de distanacia se mide en 2D
@@ -74,8 +119,8 @@ public class EnemyMovement : MonoBehaviour
         {
             Vertex casillaActual = camino[indice];
             ///Borrar la porción de hilo por la que acabamos de pasar
-            Renderer r = casillaActual.GetComponent<Renderer>();
-            r.material.color = Color.white;
+            //Renderer r = casillaActual.GetComponent<Renderer>();
+            //r.material.color = Color.white;
 
             //cambiamos a las siguiente casilla que  hay en el camino proporcionado por el A*
             if (indice > 0)
@@ -98,6 +143,21 @@ public class EnemyMovement : MonoBehaviour
 
         transform.Translate(dir * Time.deltaTime);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Ha llegado al objetivo");
+        Spawner.enemies.RemoveAt(0);
+        Destroy(this.gameObject);
+        Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
+    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("Ha llegado al objetivo");
+    //    Spawner.enemies.RemoveAt(0);
+    //    Destroy(this.gameObject);
+    //    Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
+    //}
 
 
     // MOVIMIENTO POR WAYPOINTS (1 CAMINO)

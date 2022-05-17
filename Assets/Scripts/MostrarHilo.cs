@@ -40,7 +40,7 @@ public class MostrarHilo : MonoBehaviour
     {
         //KeyDown en vez de Key a secas ya que no queremos que se est� calculando el A* todo el rato mientras se pulse espacio
         //si no que s�lo una vez al principio
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Spawner.enemies.Count > 0)
         {
             if (spawner == null)
             {
@@ -67,23 +67,26 @@ public class MostrarHilo : MonoBehaviour
                 }
                 else Debug.Log("Pilla Salida");
             }
-            Debug.Log("Espacio");
-            camino = grafo.GetPathAstar(this.spawner, this.salida, grafo.ManhattanDist);
-            Debug.Log(" AH: " + camino.Count);
-            if (smoothPath)
-            {
-                Debug.Log("Entra en smooth");
-                Line();
-            }
             else
             {
-                //Dibujar el hilo
-                //MostrarCamino(camino, colorCamino);
-            }
+                Debug.Log("Espacio");
+                camino = grafo.GetPathAstar(this.spawner, this.salida, grafo.ManhattanDist);
+                Debug.Log(" AH: " + camino.Count);
+                //if (smoothPath)
+                //{
+                //    Debug.Log("Entra en smooth");
+                //    Line();
+                //}
+                //else
+                //{
+                //    //Dibujar el hilo
+                //    //MostrarCamino(camino, colorCamino);
+                //}
 
-            //Actualizamos el camino en el script de MovimientoJugador
-            if (movimientoTeseo != null) 
-                movimientoTeseo.ActualizarCaminoSalida(camino);
+                //Actualizamos el camino en el script de MovimientoJugador
+                if (movimientoTeseo != null)
+                    movimientoTeseo.ActualizarCaminoSalida(camino);
+            }
         }
     }
 

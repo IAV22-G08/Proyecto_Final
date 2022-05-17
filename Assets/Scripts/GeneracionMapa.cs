@@ -14,6 +14,7 @@ public class GeneracionMapa : Graph
     public GameObject spawnerPrefab;
     public GameObject waypoints;
     public GameObject waypointsList;
+    public GameObject objetivoPrefab;
 
     //DatosMapa
     [SerializeField]
@@ -295,6 +296,9 @@ public class GeneracionMapa : Graph
                 Debug.Log("CASILLA EXIT pos: " + vertices[b].transform.position);
                 casillasMapa.Add(casillaExit);
                 casillaExit.transform.position = pos;
+
+                Vector3 a = new Vector3(pos.x, pos.y + 0.5f, pos.z);
+                Instantiate(objetivoPrefab, a, transform.rotation);
                 //Instantiate(waypoints, a, transform.rotation, waypointsList.transform);
                 //obj.GetComponent<MeshFilter>().mesh = mesh;
                 //obj.transform.Translate(new Vector3(0.5f, 0, 0));

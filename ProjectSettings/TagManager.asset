@@ -9,6 +9,7 @@ TagManager:
   - Waypoint
   - Particulas
   - Spawner
+  - Generador
   layers:
   - Default
   - TransparentFX

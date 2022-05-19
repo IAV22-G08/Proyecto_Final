@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
 
 
     private static GameManager _instance;
-    private List<GameObject> _towers;
+    public static List<GameObject> _towers;
+
     public static GameManager Instance
     {
         get
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("TamTorres: " + _towers.Count);
+        //Debug.Log("TamTorres: " + _towers.Count);
 
     }
 

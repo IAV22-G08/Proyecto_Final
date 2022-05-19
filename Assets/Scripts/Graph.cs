@@ -119,7 +119,23 @@ public abstract class Graph : MonoBehaviour
         Vertex dst = GetNearestVertex(dstO.transform.position);
         Debug.Log("DST.ID : " + dst.id);
         Debug.Log("SRC.ID : " + src.id);
+
+        List<Vertex>[] arrayVertices = new List<Vertex>[GameManager._towers.Count];
+        Edge[][] aristaTower = new Edge[GameManager._towers.Count][];
         //AQUI SE COMPROBARIAN LAS TORRETAS EN UNA LISTA STATIC
+        for (int i = 0; i < GameManager._towers.Count; i++)
+        {
+            Vector3 pos = GameManager._towers[i].transform.position;
+            Vertex verticeTower = GetNearestVertex(pos);
+            aristaTower[i] = GetNeighborEdge(verticeTower);
+            arrayVertices[i] = new List<Vertex>();
+            arrayVertices[i].Add(verticeTower);
+
+            foreach (Edge e in aristaTower[i])
+            {
+                arrayVertices[i].Add(e.vertex);
+            }
+        }
         //Vector3 posMinotauro = minotauro.transform.position;
         //posMinotauro.y = 0;
         //Vertex verticeMinotauro = GetNearestVertex(posMinotauro);
@@ -176,6 +192,7 @@ public abstract class Graph : MonoBehaviour
                 List<Vertex> lista = BuildPath(src.id, vertice.vertex.id, ref verticeAnterior);
                 longitud = lista.Count;
                 Debug.Log("longitud " + longitud);
+                Debug.Log("Coste camino: " + distancias[vertice.vertex.id]);
                 return lista;
                 Debug.Log("longitudFUERA");
             }
@@ -184,17 +201,23 @@ public abstract class Graph : MonoBehaviour
             aristas = GetNeighborEdge(vertice.vertex);
             foreach (Edge neigh in aristas)
             {
-                Debug.Log("Entra foreach");
+                //Debug.Log("Entra foreach");
                 int nID = neigh.vertex.id;
-                Debug.Log("NID: " + nID);
+                //Debug.Log("NID: " + nID);
                 Debug.Log(verticeAnterior[nID]);
                 //Si es != -1 es que ha sido visitado, por tanto se le salta
                 //Si es la casilla del minotauro, tampoco se cuenta
                 if (verticeAnterior[nID] == -1)
                 {
-                    Debug.Log("Posicion vertice : " + vertice.vertex.transform);
-                    Debug.Log("Posicion neigh : " + neigh.vertex.id);
-                    Debug.Log("Visita ID: " + nID);
+                    //Debug.Log("Posicion vertice : " + vertice.vertex.transform);
+                    //Debug.Log("Posicion neigh : " + neigh.vertex.id);
+                    //Debug.Log("Visita ID: " + nID);
+
+
+                    //for (int i = 0; i < GameManager.Instance._towers.Count; i++)
+                    //{
+                    //    if(vertice.vertex == arrayVertices[i].Find)
+                    //}
 
                     //AQUI SE CALCULA EL COSTE DE LAS POSICIONES DE LAS TORRETAS
                     //if (vertice.vertex == verticeMinotauro)
@@ -204,6 +227,18 @@ public abstract class Graph : MonoBehaviour
                     ////Se calcula el coste del nodo
                     //float cost = distancias[nodeId] + neigh.cost;
 
+                    float cost = distancias[nodeId] + neigh.cost;
+
+                    for (int i = 0; i < GameManager._towers.Count; i++)
+                    {
+                        foreach (Edge e in aristaTower[i])
+                        {
+                            if(neigh.vertex == e.vertex)
+                            {
+                                cost *= 5;
+                            }
+                        }
+                    }
 
                     //foreach (Edge mino in aristaMinotauro)
                     //{
@@ -212,16 +247,15 @@ public abstract class Graph : MonoBehaviour
                     //}
 
                     //Se le suma el coste estimado al coste del nodo
-                    float cost = distancias[nodeId] + neigh.cost;
                     cost += h(vertice.vertex, neigh.vertex);
 
-                    Debug.Log("COSTE: " + cost);
-                    Debug.Log("DISTANCIAS: " + distancias[neigh.vertex.id]);
+                    //Debug.Log("COSTE: " + cost);
+                    //Debug.Log("DISTANCIAS: " + distancias[neigh.vertex.id]);
                     //Si el coste es menor que el que ya estaba almacenado,
                     //entonces es mejor solución
                     if (cost < distancias[neigh.vertex.id])
                     {
-                        Debug.Log("ABC");
+                        //Debug.Log("ABC");
                         distancias[nID] = cost;
                         verticeAnterior[nID] = nodeId;
                         priorityQueueAristas.Remove(neigh);
@@ -231,7 +265,7 @@ public abstract class Graph : MonoBehaviour
                             priorityQueueAristas.Add(hijo);
                         }
                     }
-                    Debug.Log("TERMINA");
+                    //Debug.Log("TERMINA");
                 }
             }
         }
@@ -258,9 +292,9 @@ public abstract class Graph : MonoBehaviour
     {
         Vector3 posA = a.transform.position;
         Vector3 posB = b.transform.position;
-        Debug.Log("B");
+        //Debug.Log("B");
         float ac = Mathf.Abs(posA.x - posB.x) + Mathf.Abs(posA.y - posB.y);
-        Debug.Log("COSTE H: " + ac);
+        //Debug.Log("COSTE H: " + ac);
         return ac;
     }
 }

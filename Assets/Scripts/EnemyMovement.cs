@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
     // MOVIMIENTO POR ASTAR (2 O MAS CAMINOS)
     public float velocidadMax;
     Graph grafo;
+    bool dead = false;
 
     private Rigidbody rb;
     private Vector3 velocidad;
@@ -146,10 +147,14 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Ha llegado al objetivo");
-        Spawner.enemies.RemoveAt(0);
-        Destroy(this.gameObject);
-        Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
+        if (Spawner.enemies.Count > 0 && !dead)
+        {
+            Debug.Log("Ha llegado al objetivo");
+            Spawner.enemies.RemoveAt(0);
+            Destroy(this.gameObject);
+            Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
+            dead = true;
+        }
     }
     //private void OnTriggerEnter(Collider other)
     //{

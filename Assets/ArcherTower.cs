@@ -46,6 +46,10 @@ public class ArcherTower : MonoBehaviour
             proyectilDisparado.transform.rotation = Quaternion.LookRotation(dirDisparo);
             proyectilDisparado.transform.Rotate(new Vector3(90, 0, 0));
         }
+        else
+        {
+            enemigosEnRango.Remove(target);
+        }
         
 
         Invoke("RecargarDisparo", tiempoEntreDisparo);

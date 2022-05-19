@@ -41,8 +41,13 @@ public class ArcherTower : MonoBehaviour
             //hay que poner al proyectil que salga un radio de distancia  en el que si sale se destruye
             proyectilDisparado.GetComponent<Proyectil>().setRadioDestruccion(this.GetComponent<DrawRadius>().getRadio());
             proyectilDisparado.transform.position = this.transform.position;
+
+            //Calcular la posición en la que estará el objeto
             Vector3 dirDisparo = predictedEnemyPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, velocidadDisparo) - this.transform.position;
-            proyectilDisparado.GetComponent<Rigidbody>().velocity = (dirDisparo.normalized * velocidadDisparo);
+
+            //Una vez obtendida la dirección a la que tienen que ir os proyectiles hay que obtener la velocidad de las componentes del vector velocidad
+            proyectilDisparado.GetComponent<Rigidbody>().velocity = velocidadFinal(dirDisparo);
+            //proyectilDisparado.GetComponent<Rigidbody>().velocity = (dirDisparo.normalized * velocidadDisparo);
             proyectilDisparado.transform.rotation = Quaternion.LookRotation(dirDisparo);
             proyectilDisparado.transform.Rotate(new Vector3(90, 0, 0));
         }
@@ -55,6 +60,13 @@ public class ArcherTower : MonoBehaviour
         Invoke("RecargarDisparo", tiempoEntreDisparo);
     }
 
+
+    Vector3 velocidadFinal(Vector3 dirDestino)
+    {
+        float magnitud = Mathf.Sqrt(Mathf.Pow(dirDestino.x, 2) + Mathf.Pow(dirDestino.y, 2) + Mathf.Pow(dirDestino.z, 2));
+        float a = velocidadDisparo / magnitud;
+        return new Vector3(magnitud * dirDestino.x, magnitud * dirDestino.y, magnitud * dirDestino.z);
+    }
     private void RecargarDisparo()
     {
         listoDisparo = true;

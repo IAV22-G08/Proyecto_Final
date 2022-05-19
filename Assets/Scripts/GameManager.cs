@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
 
     private static GameManager _instance;
+    private List<GameObject> _towers;
     public static GameManager Instance
     {
         get
@@ -65,12 +66,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
+        _towers = new List<GameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("TamTorres: " + _towers.Count);
 
     }
 
@@ -84,4 +86,7 @@ public class GameManager : MonoBehaviour
         }
        
     }
+
+    public void addTower(GameObject t) { _towers.Add(t); } 
+    public void removeTower(GameObject t) { _towers.Remove(t); } 
 }

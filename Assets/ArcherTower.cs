@@ -33,15 +33,20 @@ public class ArcherTower : MonoBehaviour
 
     private void Disparar(GameObject target)
     {
-        listoDisparo  = false;
-        GameObject proyectilDisparado = Instantiate(proyectil, this.transform);
-        //hay que poner al proyectil que salga un radio de distancia  en el que si sale se destruye
-        proyectilDisparado.GetComponent<Proyectil>().setRadioDestruccion(this.GetComponent<DrawRadius>().getRadio());
-        proyectilDisparado.transform.position = this.transform.position;
-        Vector3 dirDisparo = predictedEnemyPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, velocidadDisparo) -   this.transform.position;
-        proyectilDisparado.GetComponent<Rigidbody>().velocity =  (dirDisparo.normalized*velocidadDisparo);
-        proyectilDisparado.transform.rotation = Quaternion.LookRotation(dirDisparo);
-        proyectilDisparado.transform.Rotate(new Vector3(90, 0, 0));
+       
+        if(target != null)
+        {
+            listoDisparo = false;
+            GameObject proyectilDisparado = Instantiate(proyectil, this.transform);
+            //hay que poner al proyectil que salga un radio de distancia  en el que si sale se destruye
+            proyectilDisparado.GetComponent<Proyectil>().setRadioDestruccion(this.GetComponent<DrawRadius>().getRadio());
+            proyectilDisparado.transform.position = this.transform.position;
+            Vector3 dirDisparo = predictedEnemyPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, velocidadDisparo) - this.transform.position;
+            proyectilDisparado.GetComponent<Rigidbody>().velocity = (dirDisparo.normalized * velocidadDisparo);
+            proyectilDisparado.transform.rotation = Quaternion.LookRotation(dirDisparo);
+            proyectilDisparado.transform.Rotate(new Vector3(90, 0, 0));
+        }
+        
 
         Invoke("RecargarDisparo", tiempoEntreDisparo);
     }

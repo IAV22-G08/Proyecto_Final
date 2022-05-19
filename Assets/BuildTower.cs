@@ -21,7 +21,9 @@ public class BuildTower : MonoBehaviour
             if (selected != null && selected.transform.childCount == 0)
             {
                 GameObject torre = GameObject.Instantiate(archerTower, selected.transform);
-                torre.transform.position = selected.transform.position;
+                GameManager.Instance.addTower(torre);
+
+               torre.transform.position = selected.transform.position;
                 torre.transform.Translate(new Vector3(0, 1, 0));
                 torre.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 GameManager.Instance.showRadius(true);
@@ -35,9 +37,26 @@ public class BuildTower : MonoBehaviour
             if (selected != null)
             {
                 GameManager.Instance.showRadius(false);
-                Destroy(selected.transform.GetChild(0).gameObject);
+               
+                GameObject torre;
+                if (selected.transform.childCount > 0)
+                {
+                    torre = selected.transform.GetChild(0).gameObject;
+                    if (torre != null)
+                    {
+                        GameManager.Instance.removeTower(torre);
+                        Destroy(torre);
+                    }
+                        
+                }
+                    
+
+
+
+               
 
             }
         }
+
     }
 }

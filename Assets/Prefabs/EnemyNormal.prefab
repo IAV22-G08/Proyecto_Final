@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 5691702812258598757}
   - component: {fileID: 5691702812258598753}
   - component: {fileID: -4076811691058485747}
+  - component: {fileID: 5560489023228363007}
   m_Layer: 7
-  m_Name: Enemy
+  m_Name: EnemyNormal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a3a2c80dacfd4f458d8043ce941090b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadMax: 8
+  velocidadMax: 4
 --- !u!54 &-4076811691058485747
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -126,3 +127,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5560489023228363007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5691702812258598760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc9fb2cd2e722242a387151b887e73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidas: 1
+  tipoEnem: 0

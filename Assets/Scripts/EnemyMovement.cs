@@ -71,6 +71,10 @@ public class EnemyMovement : MonoBehaviour
         SeguirHilo();
     }
 
+    public void setMuerto(bool muerto)
+    {
+        dead = muerto;
+    }
     private void FixedUpdate()
     {
         //Cuando el player no esté bajo el control de la IA, el movimiento se controla mediante físicas
@@ -147,7 +151,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (Spawner.enemies.Count > 0 && !dead)
+        if (Spawner.enemies.Count > 0 && !dead && collision.gameObject.GetComponent<Proyectil>() == null)
         {
             Debug.Log("Ha llegado al objetivo");
             Spawner.enemies.RemoveAt(0);

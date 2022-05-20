@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3049343758740000356}
   - component: {fileID: 635565330973163779}
   - component: {fileID: 4128355527395432345}
+  - component: {fileID: 4372626471361502917}
   m_Layer: 0
   m_Name: ExitPrefab
   m_TagString: Exit
@@ -90,8 +91,20 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4529166782932340864}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.7124104, z: 1}
+  m_Center: {x: 0, y: 0.85620546, z: 0}
+--- !u!114 &4372626471361502917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4529166782932340864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ff7def17dbf1449aabb6f83297d736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

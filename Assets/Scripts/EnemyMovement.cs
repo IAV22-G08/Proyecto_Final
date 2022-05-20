@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     public float velocidadMax;
     Graph grafo;
     bool dead = false;
+    
 
     private Rigidbody rb;
     private Vector3 velocidad;
@@ -49,7 +50,7 @@ public class EnemyMovement : MonoBehaviour
 
         Debug.Log("Espacio");
         camino = grafo.GetPathAstar(this.inicio, this.salida, grafo.ManhattanDist);
-        Debug.Log(" AH: " + camino.Count);
+        //Debug.Log(" AH: " + camino.Count);
         //if (smoothPath)
         //{
         //    Debug.Log("Entra en smooth");
@@ -143,15 +144,25 @@ public class EnemyMovement : MonoBehaviour
         Vector3 dir = (casillaPisada.position - transform.position);
         //Direccion en 2D
         dir.y = 0;
-        dir.Normalize();//si no normalizamos va muy rápido
+        //dir.Normalize();//si no normalizamos va muy rápido
         dir *= velocidadMax;
 
-        transform.Translate(dir * Time.deltaTime);
+        //transform.Translate(dir * Time.deltaTime);
+        GetComponent<Rigidbody>().velocity = velocidadFinal(dir);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    Vector3 velocidadFinal(Vector3 dirDestino)
     {
-        if (Spawner.enemies.Count > 0 && !dead && collision.gameObject.GetComponent<Proyectil>() == null)
+        float magnitud = Mathf.Sqrt(Mathf.Pow(dirDestino.x, 2) + Mathf.Pow(dirDestino.y, 2) + Mathf.Pow(dirDestino.z, 2));
+        float a = velocidadMax / magnitud;
+        Vector3 velFinal = new Vector3(a * dirDestino.x, a * dirDestino.y, a * dirDestino.z);
+        //Debug.Log("Vel final: " + velFinal);
+        return velFinal;
+    }
+
+    public void llegaAlFinal()
+    {
+        if (Spawner.enemies.Count > 0 && !dead)
         {
             Debug.Log("Ha llegado al objetivo");
             Spawner.enemies.RemoveAt(0);
@@ -160,6 +171,8 @@ public class EnemyMovement : MonoBehaviour
             dead = true;
         }
     }
+
+
     //private void OnTriggerEnter(Collider other)
     //{
     //    Debug.Log("Ha llegado al objetivo");

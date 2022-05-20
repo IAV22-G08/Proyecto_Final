@@ -7,14 +7,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -446393579166214589, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -446393579166214589, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -446393579166214589, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2232029283713245058, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
       propertyPath: vidas
-      value: 3
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2232029283713245058, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
       propertyPath: tipoEnem
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7159716706633494944, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e77e37b7ecbb4ac458b4737cad9ba16c, type: 2}
     - target: {fileID: 7159716706633494946, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -65,7 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7159716706633494956, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
       propertyPath: m_Name
-      value: HeavyEnemy Variant
+      value: EnemigoFuerte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}

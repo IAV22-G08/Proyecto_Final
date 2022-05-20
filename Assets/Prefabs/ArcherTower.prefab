@@ -97,9 +97,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: accb9729a5891c54f9e6b56f24020bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  proyectil: {fileID: 4382533406219766030, guid: ebe83d90b56fd7648991f7a6d2fda21c, type: 3}
+  tipoFlecha: 0
+  proyectilNormal: {fileID: 4382533406219766030, guid: ebe83d90b56fd7648991f7a6d2fda21c, type: 3}
+  proyectilPesado: {fileID: 7878851682036696246, guid: 4c8b2aada3ff24545b0b40de9d440167, type: 3}
+  proyectilLigero: {fileID: 1992445556437761244, guid: dd29b5f4ef2b78f4cbd1ddf9ca48af97, type: 3}
   tiempoEntreDisparo: 0.5
   velocidadDisparo: 15
+  velocidadEnemMax: 0
 --- !u!135 &981963766129905934
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -111,7 +115,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!120 &-3506972444427842313
 LineRenderer:
@@ -224,5 +228,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segments: 50
-  radius: 5
+  radius: 20
   posY: 0

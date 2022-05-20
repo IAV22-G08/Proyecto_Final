@@ -18,29 +18,26 @@ public class Enemigo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Debug.Log("VElocidad enemigo: " + GetComponent<Rigidbody>().velocity);
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    public void recibeDanho(int danho)
     {
-        if(collision.gameObject.GetComponent<Proyectil>() != null)
-        {
-            Debug.Log("Impacta");
-            vidas--;
+        
+            //Debug.Log("Impacta");
+            vidas -= danho;
             if (Spawner.enemies.Count > 0 && vidas <= 0)
             {
-                Debug.Log("Ha llegado al objetivo");
                 Spawner.enemies.RemoveAt(0);
                 Destroy(this.gameObject);
-                Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
                 EnemyMovement enemyMov = GetComponent<EnemyMovement>();
                 if (enemyMov != null)
                 {
                     enemyMov.setMuerto(true);
                 }
             }
-        }
+        
        
     }
 }

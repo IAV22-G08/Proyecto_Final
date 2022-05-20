@@ -7,6 +7,7 @@ public class Proyectil : MonoBehaviour
     // Start is called before the first frame update
     private float radioDestruccion;
     private Vector3 posIni;
+    public int danho = 1;
 
     public float tiempoDestruccion;
     void Start()
@@ -33,5 +34,15 @@ public class Proyectil : MonoBehaviour
     public void setRadioDestruccion(float radio)
     {
         radioDestruccion = radio;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Enemigo enemy = collision.gameObject.GetComponent<Enemigo>();
+        if (enemy)
+        {
+            enemy.recibeDanho(danho);
+            Destroy(this.gameObject);
+        }
     }
 }

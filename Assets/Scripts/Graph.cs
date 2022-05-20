@@ -191,8 +191,8 @@ public abstract class Graph : MonoBehaviour
                 timeActual = Time.realtimeSinceStartup - timeActual;
                 List<Vertex> lista = BuildPath(src.id, vertice.vertex.id, ref verticeAnterior);
                 longitud = lista.Count;
-                Debug.Log("longitud " + longitud);
-                Debug.Log("Coste camino: " + distancias[vertice.vertex.id]);
+                //Debug.Log("longitud " + longitud);
+                //Debug.Log("Coste camino: " + distancias[vertice.vertex.id]);
                 return lista;
                 Debug.Log("longitudFUERA");
             }

@@ -14,7 +14,7 @@ public class Waypoints : MonoBehaviour
         {
             points[i] = transform.GetChild(i);
         }
-        Debug.Log(points.Length);
+        //Debug.Log(points.Length);
     }
 
     //Para la escena1
@@ -25,6 +25,6 @@ public class Waypoints : MonoBehaviour
         {
             points[i] = transform.GetChild(i);
         }
-        Debug.Log(points.Length);
+        //Debug.Log(points.Length);
     }
 }

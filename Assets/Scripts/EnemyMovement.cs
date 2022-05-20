@@ -27,28 +27,28 @@ public class EnemyMovement : MonoBehaviour
         inicio = GameObject.FindGameObjectWithTag("Inicio");
         if (inicio == null)
         {
-            Debug.Log("No pilla Inicio");
+            //Debug.Log("No pilla Inicio");
         }
         else
         {
-            Debug.Log("Pilla Inicio");
+            //Debug.Log("Pilla Inicio");
         }
 
         salida = GameObject.FindGameObjectWithTag("Exit");
         if (salida == null)
         {
-            Debug.Log("No pilla Salida");
+            //Debug.Log("No pilla Salida");
         }
-        else Debug.Log("Pilla Salida");
+        //else Debug.Log("Pilla Salida");
 
         grafo = GameObject.FindGameObjectWithTag("Generador").GetComponent<GeneracionMapa>();
         if (grafo == null)
         {
-            Debug.Log("No pilla grafo");
+            //Debug.Log("No pilla grafo");
         }
-        Debug.Log("Pilla grafo");
+        //Debug.Log("Pilla grafo");
 
-        Debug.Log("Espacio");
+        //Debug.Log("Espacio");
         camino = grafo.GetPathAstar(this.inicio, this.salida, grafo.ManhattanDist);
         //Debug.Log(" AH: " + camino.Count);
         //if (smoothPath)

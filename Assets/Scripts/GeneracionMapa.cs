@@ -252,16 +252,16 @@ public class GeneracionMapa : Graph
 
                 Vector3 pos = casillasCamino[index].transform.position;
                 Destroy(casillasCamino[index]);
-                Debug.Log("GENERA INICIO x: " + pos.x + "   y: " + pos.z);
+                //Debug.Log("GENERA INICIO x: " + pos.x + "   y: " + pos.z);
                 int b = GridToId((int)pos.z, (int)pos.x);
-                Debug.Log("AHA: " + b);
+                //Debug.Log("AHA: " + b);
                 vertexObjs[b] = Instantiate(inicioPrefab);
                 casillaIncio = vertexObjs[b];
                 vertexObjs[b].transform.position = pos;
                 Vertex v = vertexObjs[b].AddComponent<Vertex>();
                 v.id = b;
                 vertices[b] = v;
-                Debug.Log("CASILLA INICIO pos: " + vertices[b].transform.position);
+                //Debug.Log("CASILLA INICIO pos: " + vertices[b].transform.position);
                 casillasMapa.Add(casillaIncio);
                 casillaIncio.transform.position = pos;
 
@@ -284,16 +284,16 @@ public class GeneracionMapa : Graph
 
                 Vector3 pos = casillasCamino[index].transform.position;
                 Destroy(casillasCamino[index]);
-                Debug.Log("GENERA EXIT x: " + pos.x + "   y: " + pos.z);
+                //Debug.Log("GENERA EXIT x: " + pos.x + "   y: " + pos.z);
                 int b = GridToId((int)pos.z, (int)pos.x);
-                Debug.Log("AHA: " + b);
+                //Debug.Log("AHA: " + b);
                 vertexObjs[b] = Instantiate(exitPrefab);
                 casillaExit = vertexObjs[b];
                 vertexObjs[b].transform.position = pos;
                 Vertex v = vertexObjs[b].AddComponent<Vertex>();
                 v.id = b;
                 vertices[b] = v;
-                Debug.Log("CASILLA EXIT pos: " + vertices[b].transform.position);
+                //Debug.Log("CASILLA EXIT pos: " + vertices[b].transform.position);
                 casillasMapa.Add(casillaExit);
                 casillaExit.transform.position = pos;
 
@@ -311,16 +311,16 @@ public class GeneracionMapa : Graph
 
                 Vector3 pos = casillasCamino[index].transform.position;
                 Destroy(casillasCamino[index]);
-                Debug.Log("GENERA SUELO x: " + pos.x + "   y: " + pos.z);
+                //Debug.Log("GENERA SUELO x: " + pos.x + "   y: " + pos.z);
                 int b = GridToId((int)pos.z, (int)pos.x);
-                Debug.Log("AHA: " + b);
+                //Debug.Log("AHA: " + b);
                 vertexObjs[b] = Instantiate(floorPrefab);
                 casillaFloor = vertexObjs[b];
                 vertexObjs[b].transform.position = pos;
                 Vertex v = vertexObjs[b].AddComponent<Vertex>();
                 v.id = b;
                 vertices[b] = v;
-                Debug.Log("CASILLA SUELO pos: " + vertices[b].transform.position);
+                //Debug.Log("CASILLA SUELO pos: " + vertices[b].transform.position);
                 casillasMapa.Add(casillaFloor);
                 casillaFloor.transform.position = pos;
 
@@ -385,16 +385,16 @@ public class GeneracionMapa : Graph
 
                     Vector3 pos = casillasCamino2[index].transform.position;
                     Destroy(casillasCamino2[index]);
-                    Debug.Log("GENERA SUELO x: " + pos.x + "   y: " + pos.z);
+                    //Debug.Log("GENERA SUELO x: " + pos.x + "   y: " + pos.z);
                     int b = GridToId((int)pos.z, (int)pos.x);
-                    Debug.Log("AHA: " + b);
+                    //Debug.Log("AHA: " + b);
                     vertexObjs[b] = Instantiate(floorPrefab);
                     casillaFloor = vertexObjs[b];
                     vertexObjs[b].transform.position = pos;
                     Vertex v = vertexObjs[b].AddComponent<Vertex>();
                     v.id = b;
                     vertices[b] = v;
-                    Debug.Log("CASILLA SUELO pos: " + vertices[b].transform.position);
+                    //Debug.Log("CASILLA SUELO pos: " + vertices[b].transform.position);
                     casillasMapa.Add(casillaFloor);
                     casillaFloor.transform.position = pos;
 
@@ -405,7 +405,7 @@ public class GeneracionMapa : Graph
             index++;
         }
 
-        Debug.Log("CASILLAS CAMINABLES : " + casillasCaminables);
+        //Debug.Log("CASILLAS CAMINABLES : " + casillasCaminables);
         casillasCamino[0] = casillaIncio;
         casillasCamino[casillasCamino.Count - 1] = casillaExit;
 
@@ -442,7 +442,7 @@ public class GeneracionMapa : Graph
         {
             for (int j = 0; j < altoMapa; j++)
             {
-                Debug.Log("Vertice i: " + i + "   j: " + j);
+                //Debug.Log("Vertice i: " + i + "   j: " + j);
                 SetNeighbours(j, i);
             }
         }
@@ -665,7 +665,7 @@ public class GeneracionMapa : Graph
 
     private int GridToId(int x, int y)
     {
-        Debug.Log("x: " + x + "   y: " + y);
+        //Debug.Log("x: " + x + "   y: " + y);
         return Math.Max(altoMapa, anchoMapa) * y + x;
         //De abajo derecha a arriba izquierda
     }
@@ -676,7 +676,7 @@ public class GeneracionMapa : Graph
         int row = y;
         int i, j;
         int vertexId = GridToId(x, y);
-        Debug.Log("ID: " + vertexId);
+        //Debug.Log("ID: " + vertexId);
         neighbors[vertexId] = new List<Vertex>();
         costs[vertexId] = new List<float>();
         Vector2[] pos = new Vector2[0];
@@ -713,7 +713,7 @@ public class GeneracionMapa : Graph
                 continue;
             if (!mapVertices[i, j])
                 continue;
-            Debug.Log("Vertice EDGE i: " + i + "   j: " + j);
+            //Debug.Log("Vertice EDGE i: " + i + "   j: " + j);
             int id = GridToId(j, i);
             neighbors[vertexId].Add(vertices[id]);
             costs[vertexId].Add(defaultCost);
@@ -722,7 +722,7 @@ public class GeneracionMapa : Graph
 
     public override Vertex GetNearestVertex(Vector3 position)
     {
-        Debug.Log("NV x: " + position.x + "   y: " + position.z);
+        //Debug.Log("NV x: " + position.x + "   y: " + position.z);
         int col = (int)(position.x);
         int row = (int)(position.z);
         Vector2 p = new Vector2(col, row);
@@ -737,8 +737,8 @@ public class GeneracionMapa : Graph
             int id = GridToId(row, col);
             if (mapVertices[col, row])
             {
-                Debug.Log("ID NearestVertex: " + id);
-                Debug.Log("Position NearestVertex: " + vertices[id].transform.position);
+                //Debug.Log("ID NearestVertex: " + id);
+                //Debug.Log("Position NearestVertex: " + vertices[id].transform.position);
                 return vertices[id];
             }
 

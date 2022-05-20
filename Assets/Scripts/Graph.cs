@@ -92,8 +92,8 @@ public abstract class Graph : MonoBehaviour
             edges[x].cost = costes[x];
         }
 
-        Debug.Log("EDGES : " + edges.Length);
-        Debug.Log("EDGES CONCTADO: " + edges[0].vertex.id);
+        //Debug.Log("EDGES : " + edges.Length);
+        //Debug.Log("EDGES CONCTADO: " + edges[0].vertex.id);
         return edges;
     }
 
@@ -106,19 +106,19 @@ public abstract class Graph : MonoBehaviour
         edgesVisitados = 0;
         longitud = 0;
 
-        Debug.Log("ASTAR");
+        //Debug.Log("ASTAR");
 
         //Código defensivo
         if (!srcO || !dstO)
             return new List<Vertex>();
 
         //Guardar posiciones de los game objects en vertices
-        Debug.Log("Pos Inicio x: " + srcO.transform.position.x + "  y: " + srcO.transform.position.z);
-        Debug.Log("Pos Exit x: " + dstO.transform.position.x + "  y: " + dstO.transform.position.z);
+        //Debug.Log("Pos Inicio x: " + srcO.transform.position.x + "  y: " + srcO.transform.position.z);
+        //Debug.Log("Pos Exit x: " + dstO.transform.position.x + "  y: " + dstO.transform.position.z);
         Vertex src = GetNearestVertex(srcO.transform.position);
         Vertex dst = GetNearestVertex(dstO.transform.position);
-        Debug.Log("DST.ID : " + dst.id);
-        Debug.Log("SRC.ID : " + src.id);
+        //Debug.Log("DST.ID : " + dst.id);
+        //Debug.Log("SRC.ID : " + src.id);
 
         List<Vertex>[] arrayVertices = new List<Vertex>[GameManager._towers.Count];
         Edge[][] aristaTower = new Edge[GameManager._towers.Count][];
@@ -156,7 +156,7 @@ public abstract class Graph : MonoBehaviour
 
         float[] distancias = new float[vertices.Length];
         int[] verticeAnterior = new int[vertices.Length];
-        Debug.Log("VERTICES: " + vertices.Length);
+        //Debug.Log("VERTICES: " + vertices.Length);
 
         vertice = new Edge(src, 0);
         priorityQueueAristas.Add(vertice);
@@ -174,7 +174,7 @@ public abstract class Graph : MonoBehaviour
             }
         }
 
-        Debug.Log("COUNT : " + priorityQueueAristas.Count);
+        //Debug.Log("COUNT : " + priorityQueueAristas.Count);
         //Bucle ppal
         while (priorityQueueAristas.Count > 0)
         {
@@ -183,7 +183,7 @@ public abstract class Graph : MonoBehaviour
             //Obtenemos el nodo más prioritario
             vertice = priorityQueueAristas.Remove();
             int nodeId = vertice.vertex.id;
-            Debug.Log("VERTICE.VERTEX.ID : " + vertice.vertex.id);
+            //Debug.Log("VERTICE.VERTEX.ID : " + vertice.vertex.id);
 
             //Si es el que se busca, devolvemos el camino construido
             if (ReferenceEquals(vertice.vertex, dst))
@@ -204,7 +204,7 @@ public abstract class Graph : MonoBehaviour
                 //Debug.Log("Entra foreach");
                 int nID = neigh.vertex.id;
                 //Debug.Log("NID: " + nID);
-                Debug.Log(verticeAnterior[nID]);
+                //Debug.Log(verticeAnterior[nID]);
                 //Si es != -1 es que ha sido visitado, por tanto se le salta
                 //Si es la casilla del minotauro, tampoco se cuenta
                 if (verticeAnterior[nID] == -1)

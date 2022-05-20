@@ -30,14 +30,21 @@ public class Enemigo : MonoBehaviour
             if (Spawner.enemies.Count > 0 && vidas <= 0)
             {
                 Spawner.enemies.RemoveAt(0);
-                Destroy(this.gameObject);
-                EnemyMovement enemyMov = GetComponent<EnemyMovement>();
-                if (enemyMov != null)
-                {
-                    enemyMov.setMuerto(true);
-                }
+            EnemyMovement enemyMov = GetComponent<EnemyMovement>();
+            if (enemyMov != null)
+            {
+                enemyMov.setMuerto(true);
+            }
+            Destroy(this.gameObject);
+                
             }
         
        
+    }
+
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.removeFromTowers(this.gameObject);
     }
 }

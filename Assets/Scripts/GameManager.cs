@@ -88,6 +88,13 @@ public class GameManager : MonoBehaviour
        
     }
 
+    public void removeFromTowers(GameObject gO)
+    {
+        for(int x = 0; x < _towers.Count; x++)
+        {
+           if(_towers[x]) _towers[x].GetComponent<ArcherTower>().removeEnemyFromList(gO);
+        }
+    }
     public void addTower(GameObject t) { _towers.Add(t); } 
     public void removeTower(GameObject t) { _towers.Remove(t); } 
 }

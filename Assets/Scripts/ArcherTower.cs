@@ -6,10 +6,13 @@ using UnityEngine;
 
 
 public enum TipoFlecha { NORMAL = 0, LIGERA = 1 , PESADA = 2}
+public enum FILTRADO_ATAQUE { PRIMERO = 0, FUERTE = 1 , ULTIMO = 2}
+
 public class ArcherTower : MonoBehaviour
 {
 
     public TipoFlecha tipoFlecha = TipoFlecha.NORMAL;
+    public FILTRADO_ATAQUE aQuienAtacar = FILTRADO_ATAQUE.PRIMERO;
     public GameObject proyectilNormal;
     public GameObject proyectilPesado;
     public GameObject proyectilLigero;
@@ -27,7 +30,7 @@ public class ArcherTower : MonoBehaviour
         enemigosEnRango = new List<GameObject>();
         Invoke("RecargarDisparo", tiempoEntreDisparo);
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -35,11 +38,107 @@ public class ArcherTower : MonoBehaviour
         {
             if(enemigosEnRango.Count > 0)
             {
-                Disparar(enemigosEnRango[0]);
+                switch (aQuienAtacar)
+                {
+                    case FILTRADO_ATAQUE.PRIMERO:
+                        Disparar(enemigosEnRango[0]);
+                        break;
+                    case FILTRADO_ATAQUE.ULTIMO:
+                        Disparar(enemigosEnRango[enemigosEnRango.Count - 1]);
+                        break;
+                    case FILTRADO_ATAQUE.FUERTE:
+                        GameObject enemigoaAtacar = seleccionarFuerte();
+                        if(enemigoaAtacar)Disparar(enemigoaAtacar);
+                        break;
+
+                }
             }
         }
     }
 
+    //Devuelve el más fuerte, si encuentra un enemigo de clase fuerte lo devuelve directamente
+    //Si no, se guarda el indice del primer normal y rápido que encuentra y devuelve el normal o el rápido como útlima opción
+    private GameObject seleccionarFuerte()
+    {
+        //La versión 1 es más eficiente ya que no recorre la lista entera pero queda menos claro lo que hace asiqeu utilizamos al segundaa
+        #region V1
+        //int x = 0;
+        //int primerNormal = -1;
+        //int primerRapido = -1;
+        //while (enemigosEnRango.Count > 0 && x < enemigosEnRango.Count)
+        //{
+
+        //    if (enemigosEnRango[x] != null)
+        //    {
+        //        Enemigo enem = enemigosEnRango[x].GetComponent<Enemigo>();
+        //        if (enem && enem.tipoEnem == TipoEnemigo.FUERTE)
+        //        {
+        //            return enemigosEnRango[x];
+        //        }
+        //        else if (enem && primerNormal == -1 && enem.tipoEnem == TipoEnemigo.DEFAULT)
+        //        {
+        //            primerNormal = x;
+        //        }
+        //        else if (enem && primerRapido == -1 && enem.tipoEnem == TipoEnemigo.RAPIDO)
+        //        {
+        //            primerRapido = x;
+        //        }
+        //    }
+        //    x++;
+
+
+        //}
+
+
+        //GameObject enemigoADevovler = (primerNormal != -1) ? enemigosEnRango[primerNormal] : enemigosEnRango[primerRapido];
+        //if (enemigoADevovler == null && enemigosEnRango.Count > 0)
+        //{
+        //    enemigoADevovler = enemigosEnRango[0];
+        //}
+        //else
+        //{
+        //    enemigoADevovler = null;
+        //}
+        //return enemigoADevovler;
+
+        #endregion
+
+        //Es esta version tenemos una lista de 3 de tamaño (uno para cada tipo de enemigo), en ella nos guardamos el indice en enemigosEnRango que ocupa el primer enemigo de ese tipo que encontremos,
+        //si no hay enemigos de ese tipo hay un -1
+        List<int> indicesFuertes = new List<int>(3);
+        for (int x = 0; x < 3; x++)
+        {
+            indicesFuertes.Add(-1);
+        }
+        for (int x = 0; x < enemigosEnRango.Count; x++)
+        {
+            Enemigo enem = enemigosEnRango[x].GetComponent<Enemigo>();
+            if (enem && indicesFuertes[2] == -1 && enem.tipoEnem == TipoEnemigo.FUERTE)
+            {
+                indicesFuertes[2] = x;
+            }
+            else if (enem && indicesFuertes[1] == -1 && enem.tipoEnem == TipoEnemigo.DEFAULT)
+            {
+                indicesFuertes[1] = x;
+            }
+            else if (enem && indicesFuertes[0] == -1 && enem.tipoEnem == TipoEnemigo.RAPIDO)
+            {
+                indicesFuertes[0] = x;
+            }
+        }
+
+        //Se devuelve el primer enemigo con indice distinto de -1, se va de  indicesFuertes.Count - 1 a 0 y aque se va de más fuerte a menos
+        for (int x = indicesFuertes.Count - 1; x >= 0; x--)
+        {
+            if (indicesFuertes[x] > -1)
+                return enemigosEnRango[indicesFuertes[x]];
+        }
+
+        //si no ha podido encontrar nada
+        return null;
+       
+
+    }
     private void Disparar(GameObject target)
     {
        
@@ -101,10 +200,7 @@ public class ArcherTower : MonoBehaviour
             proyectilDisparado.transform.rotation = Quaternion.LookRotation(dirDisparo);
             proyectilDisparado.transform.Rotate(new Vector3(90, 0, 0));
         }
-        else
-        {
-            enemigosEnRango.Remove(target);
-        }
+       
         
 
     }
@@ -135,10 +231,14 @@ public class ArcherTower : MonoBehaviour
         if (other.GetComponent<EnemyMovement>() != null)
         {
             enemigosEnRango.Remove(other.gameObject);
-            //Debug.Log("Sale");
+            Debug.Log("Sale");
         }
     }
 
+    public void removeEnemyFromList(GameObject gO )
+    {
+        enemigosEnRango.Remove(gO);
+    }
 
     private Vector3 predictedEnemyPosition(Vector3 targetPosition, Vector3 targetVelocity, float projectileSpeed)
     {

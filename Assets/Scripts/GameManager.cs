@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
 
     private static GameManager _instance;
     public static List<GameObject> _towers;
-    public GameObject contructorDeTorres;
+    public UIManager _myUIManager;
+    private int dinerete;
     public static GameManager Instance
     {
         get
@@ -18,11 +19,12 @@ public class GameManager : MonoBehaviour
             {
                 GameObject go = new GameObject("GameManager");
                 _instance = go.AddComponent<GameManager>();
+                
             }
             return _instance;
         }
     }
-
+    
 
 
     //public GameObject particles;
@@ -41,15 +43,21 @@ public class GameManager : MonoBehaviour
         }
 
         //remarcar la nueva
+        _myUIManager = GameObject.FindWithTag("Canvas").GetComponent<UIManager>();
+
         casillaSeleccionada = casilla;
         casillaSeleccionada.GetComponent<MeshRenderer>().material.color = Color.grey;
         GameObject.FindGameObjectsWithTag("Particulas")[0].transform.position = casillaSeleccionada.transform.position;
         showRadius(true);
-
+        _myUIManager.ActualizaComporTorreText();
 
 
     }
 
+    public UIManager getUIManager()
+    {
+        return _myUIManager;
+    }
 
     public void deseleccionarCasilla()
     {
@@ -61,6 +69,8 @@ public class GameManager : MonoBehaviour
 
         }
         casillaSeleccionada = null;
+        _myUIManager.ActualizaComporTorreText();
+
     }
 
 
@@ -68,22 +78,43 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _towers = new List<GameObject>();
+        dinerete = 200;
+
     }
 
+    public void setUIManger(UIManager ui)
+    {
+        _myUIManager = ui;
+
+    }
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("TamTorres: " + _towers.Count);
+                //_myUIManager = GameObject.FindWithTag("Canvas").GetComponent<UIManager>();
+
 
     }
 
+    public bool SuficienteDinero(int dineroGastar)
+    {
+        return dinerete >= dineroGastar;
+    }
+    public void SumaDinero(int dinereteAnhadir)
+    {
+        dinerete += dinereteAnhadir;
+        _myUIManager.updateMoney(dinerete);
+    }
 
     public void showRadius( bool activar)
     {
         if (casillaSeleccionada.transform.childCount > 0)
         {
-            casillaSeleccionada.transform.GetChild(0).GetComponent<LineRenderer>().enabled = activar;
-            casillaSeleccionada.transform.GetChild(0).GetComponent<DrawRadius>().enabled = activar;
+            LineRenderer lr = casillaSeleccionada.transform.GetChild(0).GetComponent<LineRenderer>();
+            DrawRadius dr = casillaSeleccionada.transform.GetChild(0).GetComponent<DrawRadius>();
+
+
+            if(lr)lr.enabled = activar;
+            if(dr)dr.enabled = activar;
         }
        
     }
@@ -92,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         for(int x = 0; x < _towers.Count; x++)
         {
-           if(_towers[x]) _towers[x].GetComponent<ArcherTower>().removeEnemyFromList(gO);
+           if(_towers[x]) _towers[x].GetComponent<Tower>().removeEnemyFromList(gO);
         }
     }
     public void addTower(GameObject t) { _towers.Add(t); } 

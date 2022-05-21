@@ -19,6 +19,7 @@ public class DrawRadius : MonoBehaviour
         line.SetVertexCount(segments + 1);
         line.useWorldSpace = false;
         CreatePoints();
+        GetComponent<LineRenderer>().material.color = Color.cyan;
     }
 
     void CreatePoints()

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: b88895c386168f04c9b34927a4bcd322, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -286,7 +286,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114594429}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 899194283}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &114594429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6014,7 +6026,7 @@ GameObject:
   - component: {fileID: 899194283}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6031,8 +6043,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c94b9284813bc9449ed453fb1830bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetButton: {fileID: 0}
-  crearTorre: {fileID: 0}
+  resetButton: {fileID: 1883639582}
+  crearTorre: {fileID: 222724088}
+  cambiarCompoTorre: {fileID: 1529371070}
+  torreRapida: {fileID: 1518255361}
+  torrePesada: {fileID: 1137646010}
+  textoComporTorre: {fileID: 1738028237}
+  dinereteText: {fileID: 1433723502}
 --- !u!114 &899194284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6522,7 +6539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879ec6c1a4a978e4cb4841bebafc6957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contructorDeTorres: {fileID: 0}
+  _myUIManager: {fileID: 0}
 --- !u!4 &1061586831
 Transform:
   m_ObjectHideFlags: 0
@@ -6827,7 +6844,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1137646011}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1880750396}
+        m_TargetAssemblyTypeName: TowerManagement, Assembly-CSharp
+        m_MethodName: MejorarTorrePesasda
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1137646011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7361,7 +7390,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: 200
 --- !u!222 &1433723503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7610,7 +7639,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1518255362}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1880750396}
+        m_TargetAssemblyTypeName: TowerManagement, Assembly-CSharp
+        m_MethodName: MejorarTorreLigera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1518255362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7731,7 +7772,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1529371071}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1880750396}
+        m_TargetAssemblyTypeName: BuildTower, Assembly-CSharp
+        m_MethodName: cambiarComportameintoTower
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1529371071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8300,7 +8353,7 @@ GameObject:
   - component: {fileID: 1880750397}
   - component: {fileID: 1880750396}
   m_Layer: 0
-  m_Name: ContructorDeTorres
+  m_Name: TowerManagement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

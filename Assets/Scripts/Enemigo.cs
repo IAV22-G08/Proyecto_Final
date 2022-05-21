@@ -12,7 +12,7 @@ public class Enemigo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -24,22 +24,23 @@ public class Enemigo : MonoBehaviour
 
     public void recibeDanho(int danho)
     {
-        
-            //Debug.Log("Impacta");
-            vidas -= danho;
-            if (Spawner.enemies.Count > 0 && vidas <= 0)
-            {
-                Spawner.enemies.RemoveAt(0);
+
+        //Debug.Log("Impacta");
+        vidas -= danho;
+        if (Spawner.enemies.Count > 0 && vidas <= 0)
+        {
+            Spawner.enemies.RemoveAt(0);
             EnemyMovement enemyMov = GetComponent<EnemyMovement>();
             if (enemyMov != null)
             {
                 enemyMov.setMuerto(true);
             }
+            GameManager.Instance.SumaDinero(((int)tipoEnem + 1) * 10);
             Destroy(this.gameObject);
-                
-            }
-        
-       
+
+        }
+
+
     }
 
 

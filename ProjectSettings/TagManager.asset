@@ -10,6 +10,7 @@ TagManager:
   - Particulas
   - Spawner
   - Generador
+  - Canvas
   layers:
   - Default
   - TransparentFX

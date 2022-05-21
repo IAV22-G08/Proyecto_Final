@@ -8,7 +8,7 @@ using UnityEngine;
 public enum TipoFlecha { NORMAL = 0, LIGERA = 1 , PESADA = 2}
 public enum FILTRADO_ATAQUE { PRIMERO = 0, FUERTE = 1 , ULTIMO = 2}
 
-public class ArcherTower : MonoBehaviour
+public class Tower : MonoBehaviour
 {
 
     public TipoFlecha tipoFlecha = TipoFlecha.NORMAL;
@@ -38,7 +38,7 @@ public class ArcherTower : MonoBehaviour
     void Update()
     {
 
-        if(enemigoAtacado != null)
+        if(enemigoAtacado != null && enemigosEnRango.Count > 0)
             cannon.transform.LookAt(new Vector3(enemigoAtacado.transform.position.x, transform.position.y, enemigoAtacado.transform.position.z));
 
         if (listoDisparo)

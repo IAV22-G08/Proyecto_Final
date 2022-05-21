@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292f81d4a02629e4c89966e622cf1ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemigoNormal: {fileID: 5691702812258598760, guid: 270739a575ac41e429d8f0d0c7782b84, type: 3}
+  enemigoNormal: {fileID: 1783563462218004, guid: 7f931d4b5c97d194d8726ddf5acdd440, type: 3}
   enemigoRapido: {fileID: 7159716706633494956, guid: bb40a065353daa14fb0a3b5e6a92eaeb, type: 3}
   enemigoPesado: {fileID: 8469824283902290306, guid: 9e75dcb9802b50c4185be991491c9f63, type: 3}
   cooldown: 6

@@ -28,6 +28,8 @@ public class GeneracionMapa : Graph
     private List<GameObject> casillasMapa = new List<GameObject>();
     private List<GameObject> casillasBorde = new List<GameObject>();
 
+    public GameObject[] decorations=new GameObject[3];
+
     public List<GameObject> esquinas = new List<GameObject>();
     public List<GameObject> esquinas2 = new List<GameObject>();
 
@@ -118,6 +120,27 @@ public class GeneracionMapa : Graph
                 //Debug.Log("Casilla x: " + i + "  y: " + j);
                 id = GridToId(j, i);
                 vertexObjs[id] = Instantiate(casillaMapa);
+                int rnad = UnityEngine.Random.Range(0, 3);
+                int rObs = UnityEngine.Random.Range(0, 10);
+                if (rObs < 2)
+                {
+
+                    if (rnad == 0)
+                    {
+                        Instantiate(decorations[0], vertexObjs[id].transform);
+                    }
+                    else if (rnad == 1)
+                    {
+                        Instantiate(decorations[1], vertexObjs[id].transform);
+
+                    }
+                    else
+                    {
+                        Instantiate(decorations[2], vertexObjs[id].transform);
+
+                    }
+                }
+                
                 casillasMapa.Add(vertexObjs[id]);
                 vertexObjs[id].transform.position = new Vector3(i, -0.5f, j);
                 Vertex v = vertexObjs[id].AddComponent<Vertex>();

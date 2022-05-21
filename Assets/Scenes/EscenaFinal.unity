@@ -5855,6 +5855,10 @@ MonoBehaviour:
   objetivoPrefab: {fileID: 3931630695420199467, guid: 0ff64e978c0c8ed48920464ad6d5c643, type: 3}
   anchoMapa: 15
   altoMapa: 15
+  decorations:
+  - {fileID: 161500, guid: ec271694f23e63e4da0cd99cfe32b104, type: 3}
+  - {fileID: 188894, guid: 815e4cd23e4eb2b42a8a426a7d8c8708, type: 3}
+  - {fileID: 159590, guid: b18669c98c593c945b6154adf121f7ce, type: 3}
   esquinas: []
   esquinas2: []
   mesh: {fileID: 4300002, guid: 3ca31ed2b2305b049855746cd6e2106f, type: 3}

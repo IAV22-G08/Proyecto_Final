@@ -6,6 +6,8 @@ public class Selectable : MonoBehaviour
 {
     [SerializeField]
     private LayerMask selectableLayer;
+    [SerializeField]
+    private LayerMask UILayer;
     // Update is called once per frame
     void Update()
     {
@@ -17,10 +19,11 @@ public class Selectable : MonoBehaviour
             {
                 GameManager.Instance.setCasillaSeleccionada(rayHit.collider.gameObject);
             }
-            else
-            {
-                GameManager.Instance.deseleccionarCasilla();
-            }
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            GameManager.Instance.deseleccionarCasilla();
+
         }
     }
 }

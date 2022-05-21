@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     private static GameManager _instance;
     public static List<GameObject> _towers;
-
+    public GameObject contructorDeTorres;
     public static GameManager Instance
     {
         get
@@ -96,5 +96,7 @@ public class GameManager : MonoBehaviour
         }
     }
     public void addTower(GameObject t) { _towers.Add(t); } 
+
+    
     public void removeTower(GameObject t) { _towers.Remove(t); } 
 }

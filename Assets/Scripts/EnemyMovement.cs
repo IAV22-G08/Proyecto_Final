@@ -151,7 +151,7 @@ public class EnemyMovement : MonoBehaviour
         GetComponent<Rigidbody>().velocity = velocidadFinal(dir);
         transform.LookAt(new Vector3(casillaPisada.position.x, transform.position.y, casillaPisada.position.z));
         //Quaternion.LookRotation(dir, Vector3.forward);
-        Debug.Log("Velocidad normal: " + transform.position);
+        //Debug.Log("Velocidad normal: " + transform.position);
     }
 
     Vector3 velocidadFinal(Vector3 dirDestino)

@@ -5239,7 +5239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0ac61193bfcce643aeefe53b73d36f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTower: {fileID: 2304597694889180325, guid: 4038761aa55704c4e8911fcef50df28a, type: 3}
+  archerTower: {fileID: 1582112111176492, guid: d1b1882db25d6fc4f8ff52b752db2e26, type: 3}
 --- !u!1 &1390567518
 GameObject:
   m_ObjectHideFlags: 0

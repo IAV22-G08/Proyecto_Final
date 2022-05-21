@@ -24,16 +24,23 @@ public class ArcherTower : MonoBehaviour
     private List<GameObject> enemigosEnRango;
     private bool listoDisparo = false;
 
+    GameObject enemigoAtacado = null;
+    GameObject cannon = null;
     // Start is called before the first frame update
     void Start()
     {
         enemigosEnRango = new List<GameObject>();
         Invoke("RecargarDisparo", tiempoEntreDisparo);
+        if(transform.childCount > 0) cannon = transform.GetChild(0).gameObject;
     }
     
     // Update is called once per frame
     void Update()
     {
+
+        if(enemigoAtacado != null)
+            cannon.transform.LookAt(new Vector3(enemigoAtacado.transform.position.x, transform.position.y, enemigoAtacado.transform.position.z));
+
         if (listoDisparo)
         {
             if(enemigosEnRango.Count > 0)
@@ -42,13 +49,19 @@ public class ArcherTower : MonoBehaviour
                 {
                     case FILTRADO_ATAQUE.PRIMERO:
                         Disparar(enemigosEnRango[0]);
+                        enemigoAtacado = enemigosEnRango[0];
                         break;
                     case FILTRADO_ATAQUE.ULTIMO:
                         Disparar(enemigosEnRango[enemigosEnRango.Count - 1]);
+                        enemigoAtacado = enemigosEnRango[enemigosEnRango.Count - 1];
                         break;
                     case FILTRADO_ATAQUE.FUERTE:
                         GameObject enemigoaAtacar = seleccionarFuerte();
-                        if(enemigoaAtacar)Disparar(enemigoaAtacar);
+                        if (enemigoaAtacar)
+                        {
+                            Disparar(enemigoaAtacar);
+                            enemigoAtacado = enemigoaAtacar;
+                        }
                         break;
 
                 }
@@ -178,7 +191,6 @@ public class ArcherTower : MonoBehaviour
             //hay que poner al proyectil que salga un radio de distancia  en el que si sale se destruye
             proyectilDisparado.GetComponent<Proyectil>().setRadioDestruccion(this.GetComponent<DrawRadius>().getRadio());
             proyectilDisparado.transform.position = this.transform.position;
-
 
 
             //la flecha ligera predice perfecto

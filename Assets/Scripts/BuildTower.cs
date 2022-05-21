@@ -25,7 +25,7 @@ public class BuildTower : MonoBehaviour
 
                torre.transform.position = selected.transform.position;
                 torre.transform.Translate(new Vector3(0, 1, 0));
-                torre.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                //torre.transform.localScale = new Vector3(0.7f, 0.8f, 0.8f);
                 GameManager.Instance.showRadius(true);
             }
 

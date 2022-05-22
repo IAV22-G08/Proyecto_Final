@@ -168,8 +168,8 @@ public class Tower : MonoBehaviour
             if (tipoFlecha == TipoFlecha.PESADA)
             {
                 proyectilADisparar = proyectilPesado;
-                velAUsar *= 0.5f;
-                velPredecir *= 0.5f;
+                velAUsar *= 0.3f;
+                velPredecir *= 0.3f;
                 timepoRecargaActual *= 1.5f;
             }
             else if(tipoFlecha == TipoFlecha.LIGERA)

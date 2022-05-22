@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     public Text rondasText;
     public Text enemigosText;
 
-    public List<Text> enemigosQuePasaron; 
+    public List<Text> enemigosQuePasaron;
     void Start()
     {
         Debug.Log("Start UIMANAGER");
@@ -34,13 +34,13 @@ public class UIManager : MonoBehaviour
     public void updateVidas(int vidas)
     {
         vidasText.text = vidas.ToString();
-    } 
-    
+    }
+
     public void updateEnemigos(int enem)
     {
         enemigosText.text = enem.ToString();
-    } 
-    
+    }
+
     public void updateEnemigosPasaron(List<int> lista)
     {
         enemigosQuePasaron[0].text = lista[0].ToString();
@@ -66,7 +66,8 @@ public class UIManager : MonoBehaviour
 
     public void StartRound()
     {
-        GameManager.Instance.setRondaActiva(true);
+        if (!GameManager.Instance.getRondaActiva())
+            GameManager.Instance.setRondaActiva(true);
     }
     public void ActualizaComporTorreText()
     {
@@ -96,12 +97,12 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
     public void Reset()
     {
         SceneManager.LoadScene("EscenaFinal");
     }
 
-    
+
 }

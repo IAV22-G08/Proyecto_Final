@@ -11,36 +11,51 @@ public class Spawner : MonoBehaviour
     public GameObject enemigoRapido;
     public GameObject enemigoPesado;
     public float cooldown = 100f;
-
+    private int enemigosRestantes;
     private float timer = 2f;
-    private int waveIndex = 0;
 
     private void Update()
     {
-        if (timer <= 0f)
+        //if (timer <= 0f)
+        //{
+        //    StartCoroutine(Spawn());
+        //    timer = cooldown;
+        //}
+        //Debug.Log("Timer: " + timer);
+        //timer -= Time.deltaTime;
+
+        Debug.Log(GameManager.Instance.getRondaActiva());
+        if (GameManager.Instance.getRondaActiva() && enemigosRestantes <= 0)
         {
             StartCoroutine(Spawn());
-            timer = cooldown;
         }
-        //Debug.Log("Timer: " + timer);
-        timer -= Time.deltaTime;
     }
 
     IEnumerator Spawn()
     {
-        waveIndex++;
-        //Debug.Log("Spawning...");
-
-        for (int i = 0; i < waveIndex; i++)
+        //if (GameManager.Instance.getRondaActiva())
         {
-            SpawnEnemy();
-            yield return new WaitForSeconds(1f);
+            GameManager.Instance.setRondaActiva(false);
+            GameManager.Instance.SumaRonda(1);
+            Debug.Log("Spawning...");
+            enemigosRestantes = GameManager.Instance.getRonda();
+            for (int i = 0; i < GameManager.Instance.getRonda(); i++)
+            {
+                SpawnEnemy();
+                enemigosRestantes--;
+                yield return new WaitForSeconds(1f);
+            }
+
+
         }
+
     }
+
+  
 
     void SpawnEnemy()
     {
-        if (waveIndex <= 1)
+        if (GameManager.Instance.getRonda() <= 1)
         {
             enemies.Add(Instantiate(enemigoNormal,transform.position,transform.rotation));
             Debug.Log("Enemigos: " + enemies.Count);

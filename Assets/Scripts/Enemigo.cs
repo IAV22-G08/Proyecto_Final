@@ -36,6 +36,7 @@ public class Enemigo : MonoBehaviour
                 enemyMov.setMuerto(true);
             }
             GameManager.Instance.SumaDinero(((int)tipoEnem + 1) * 10);
+            GameManager.Instance.enemigoMuerto();
             Destroy(this.gameObject);
 
         }

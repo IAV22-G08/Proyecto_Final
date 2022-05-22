@@ -14,8 +14,15 @@ public class UIManager : MonoBehaviour
     public Button torrePesada;
     public Text textoComporTorre;
     public Text dinereteText;
+    public Text vidasText;
+    public Text rondasText;
+    public Text enemigosText;
+
+    public List<Text> enemigosQuePasaron; 
     void Start()
     {
+        Debug.Log("Start UIMANAGER");
+
         GameManager.Instance.setUIManger(this);
     }
 
@@ -24,9 +31,42 @@ public class UIManager : MonoBehaviour
         dinereteText.text = money.ToString();
     }
 
+    public void updateVidas(int vidas)
+    {
+        vidasText.text = vidas.ToString();
+    } 
+    
+    public void updateEnemigos(int enem)
+    {
+        enemigosText.text = enem.ToString();
+    } 
+    
+    public void updateEnemigosPasaron(List<int> lista)
+    {
+        enemigosQuePasaron[0].text = lista[0].ToString();
+        enemigosQuePasaron[1].text = lista[1].ToString();
+        enemigosQuePasaron[2].text = lista[2].ToString();
+    }
+    public void updateRondas(int rondas)
+    {
+        rondasText.text = rondas.ToString();
+    }
+
     public void DebugMode()
     {
         GameManager.Instance.SumaDinero(99999);
+        GameManager.Instance.QuitaVidas(-1000);
+    }
+
+    public void SumaRondas()
+    {
+        GameManager.Instance.SumaRonda(5);
+    }
+
+
+    public void StartRound()
+    {
+        GameManager.Instance.setRondaActiva(true);
     }
     public void ActualizaComporTorreText()
     {

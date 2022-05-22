@@ -175,6 +175,8 @@ public class Tower : MonoBehaviour
             else if(tipoFlecha == TipoFlecha.LIGERA)
             {
                 proyectilADisparar = proyectilLigero;
+                timepoRecargaActual *= 0.8f;
+
 
             }
 
@@ -268,19 +270,6 @@ public class Tower : MonoBehaviour
         return targetPosition + targetVelocity * displacement.magnitude / Mathf.Sin(Mathf.PI - targetMoveAngle - shootAngle) * Mathf.Sin(shootAngle) / targetVelocity.magnitude;
 
 
-
-
-        //Vector3 displacement = targetPosition - this.transform.position;
-        //float targetMoveAngle = Vector3.Angle(-displacement, targetVelocity) * Mathf.Deg2Rad;
-        ////if the target is stopping or if it is impossible for the projectile to catch up with the target (Sine Formula)
-        //if (targetVelocity.magnitude == 0 || targetVelocity.magnitude > projectileSpeed && Mathf.Sin(targetMoveAngle) / projectileSpeed > Mathf.Cos(targetMoveAngle) / targetVelocity.magnitude)
-        //{
-        //    Debug.Log("Position prediction is not feasible.");
-        //    return targetPosition;
-        //}
-        ////also Sine Formula
-        //float shootAngle = Mathf.Asin(Mathf.Sin(targetMoveAngle) * targetVelocity.magnitude / projectileSpeed);
-        //return targetPosition + targetVelocity * displacement.magnitude / Mathf.Sin(Mathf.PI - targetMoveAngle - shootAngle) * Mathf.Sin(shootAngle) / targetVelocity.magnitude;
 
 
     }

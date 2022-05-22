@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class GameManager : MonoBehaviour
     public static List<GameObject> _towers;
     public UIManager _myUIManager;
     private int dinerete;
+    private int vidas;
+    private int round;
+    private int enemigosMuertos;
+    private bool rondaActiva;
+    List<int> enemigosQuePasaron;
+
     public static GameManager Instance
     {
         get
@@ -75,22 +82,54 @@ public class GameManager : MonoBehaviour
 
 
 
-    void Start()
+    void Awake()
     {
         _towers = new List<GameObject>();
+        Debug.Log("Start GameManager");
         dinerete = 200;
-
+        vidas = 100;
+        round = 0;
+        enemigosMuertos = 0;
+        rondaActiva = false;
+        enemigosQuePasaron = new List<int>(3);
+        for(int x = 0;  x < 3; x++)
+        {
+            enemigosQuePasaron.Add(0);
+        }
     }
 
+
+    public void pasaEnem(int indice)
+    {
+        enemigosQuePasaron[indice]++;
+        _myUIManager.updateEnemigosPasaron(enemigosQuePasaron);
+    }
+
+    
+
+    public bool getRondaActiva()
+    {
+        return rondaActiva;
+    }
+
+    public void setRondaActiva(bool activa)
+    {
+        rondaActiva = activa;
+        Debug.Log("Se activa la ronda " + rondaActiva);
+    }
     public void setUIManger(UIManager ui)
     {
         _myUIManager = ui;
+        _myUIManager.updateMoney(dinerete);
+        _myUIManager.updateVidas(vidas);
+        _myUIManager.updateRondas(round);
 
+        Debug.Log("Dinero inicial: " + dinerete);
     }
     // Update is called once per frame
     void Update()
     {
-                //_myUIManager = GameObject.FindWithTag("Canvas").GetComponent<UIManager>();
+      //_myUIManager = GameObject.FindWithTag("Canvas").GetComponent<UIManager>();
 
 
     }
@@ -103,8 +142,35 @@ public class GameManager : MonoBehaviour
     {
         dinerete += dinereteAnhadir;
         _myUIManager.updateMoney(dinerete);
+
     }
 
+    public void enemigoMuerto()
+    {
+        enemigosMuertos++;
+        _myUIManager.updateEnemigos(enemigosMuertos);
+    }
+
+    public void SumaRonda(int rondaMas)
+    {
+        round += rondaMas;
+        _myUIManager.updateRondas(round);
+    }
+
+    public int getRonda()
+    {
+        return round;
+
+    }
+    public void QuitaVidas(int vidas2)
+    {
+        vidas -= vidas2;
+        _myUIManager.updateVidas(vidas);
+        if (vidas <= 0)
+        {
+            SceneManager.LoadScene("EscenaFinal");
+        }
+    }
     public void showRadius( bool activar)
     {
         if (casillaSeleccionada.transform.childCount > 0)

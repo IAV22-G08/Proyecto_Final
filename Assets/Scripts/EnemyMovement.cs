@@ -20,6 +20,7 @@ public class EnemyMovement : MonoBehaviour
     private GameObject inicio;
     private GameObject salida;
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -172,8 +173,13 @@ public class EnemyMovement : MonoBehaviour
             Destroy(this.gameObject);
             Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
             dead = true;
+
+            GameManager.Instance.QuitaVidas((int)(GetComponent<Enemigo>().tipoEnem + 1));
+            GameManager.Instance.pasaEnem((int)(GetComponent<Enemigo>().tipoEnem));
         }
     }
+
+
 
 
     //private void OnTriggerEnter(Collider other)

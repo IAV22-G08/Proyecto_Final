@@ -14,7 +14,7 @@ Nuestra historia cuenta cómo la civilización de Vindegard se defendía de los 
 
 Pepadum a medida que morían sus súbditos iba generando más y más, cada vez eran más fuertes, por lo que tenían que mejorar sus torres de tal forma que pudieran eliminar a todos sus enemigos y logren hacer que el Dios de la Muerte levante la bandera blanca.
 
-Propuesta Proyecto Final
+# Propuesta Proyecto Final
 
 Nuestro proyecto final consiste en crear una inteligencia artificial basada en esta historia relatada, aplicándola así en un videojuego del género de Tower Defense. El proyecto va a ser un Tower Defense al estilo Bloons TD, con una generación aleatoria del mundo en cada partida que se comience, con una serie de torres aliadas que el usuario podrá colocar en unos lugares correspondientes, cada una con sus respectivas características, stats y daño, que se encargarán de defenderse de enemigos, que tendrán también sus características propias. El objetivo de estos será llegar al final del camino y el nuestro será eliminar a todos los enemigos, antes de que lleguen al final y logren ganar. Al ser tres integrantes en este proyecto, vamos a diferenciar claramente el trabajo de cada uno:
 
@@ -35,11 +35,11 @@ Creemos que la ambición es adecuada, es decir, pensamos que el contenido propue
   - Torre de pulsos:  Ataque en área pero que afecta a todo su radio de acción. Al atacar (crear un pulso) hace daño sobre todo el radio que tiene alrededor. Daño reducido ya que puede atacar a muchos enemigos a la vez
 - Alejandro: En caso de que el mapa genere más de 1 camino para alcanzar la meta, que los enemigos tengan en cuenta ambos caminos y a su vez la disposición de las torretas de manera que elijan el camino más eficiente para llegar a la meta.
 
-¿Cuál es el punto de partida?
+# ¿Cuál es el punto de partida?
 
 Nuestro proyecto utilizará assets de terceras personas (modelos 3D, sonidos, ambientes, etc.), para intentar mostrar de manera fiel la historia contada previamente.No obstante, todo lo relacionado al funcionamiento e implementación de la inteligencia artificial estará realizada por nosotros mismos, evitando usar recursos de terceras personas.
 
-¿Cómo lo vamos a hacer?
+# ¿Cómo lo vamos a hacer?
 
 Aunque aún no hemos concretado cómo van a ser las especificaciones, pensamos que serán de la siguiente manera:
 
@@ -48,12 +48,12 @@ Aunque aún no hemos concretado cómo van a ser las especificaciones, pensamos q
 - Alejandro Ortega Ruiz: Para la generación de enemigos, tendré unos enemigos con distintas stats guardadas, de manera que según las rondas vayan avanzando estos enemigos irán siendo más complicados y en mayor cantidad, mediante el algoritmo de A\* se realizará una búsqueda del camino óptimo para que los enemigos sepan porque camino es más probable llegar al final.
 
 
-Controles
+# Controles
 
 ![](images/Captura.png)
 
 
-Solución
+# Solución
 
 David Rodríguez Gómez:
 
@@ -172,9 +172,9 @@ Manuel Adeliño y David Rodríguez:
 
 Utilizamos el script de UIManager junto con  métodos públicos de los demás scripts y del GameManager para llevar a cabo la siguiente interfaz, en la que se refleja los números de enemigos muertos, los que nos han atacado, el número de monedas, la oleada en la que nos encontramos, y la vida que tenemos, además de los botones correspondientes referidos al modo Debug, compra-venta de torres, el modo de la torreta y el inicio de la ronda:
 
-![](images/Captura.png)
+![](images/Captura2.png)
 
-Bibliografía y/o referentes
+# Bibliografía y/o referentes
 
 - *Diapositivas del Curso 2021-2022 de la asignatura de Inteligencia Artificial del tercer curso del grado de Desarrollo de Videojuegos impartida por Federico Peinado Gil.*
 - *AI for Games, Third Edition Ian Millington.*

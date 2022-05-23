@@ -27,9 +27,9 @@ public class Enemigo : MonoBehaviour
 
         //Debug.Log("Impacta");
         vidas -= danho;
-        if (Spawner.enemies.Count > 0 && vidas <= 0)
+        if (vidas <= 0)
         {
-            Spawner.enemies.RemoveAt(0);
+            GameManager._enemies.Remove(this.gameObject);
             EnemyMovement enemyMov = GetComponent<EnemyMovement>();
             if (enemyMov != null)
             {

@@ -166,12 +166,12 @@ public class EnemyMovement : MonoBehaviour
 
     public void llegaAlFinal()
     {
-        if (Spawner.enemies.Count > 0 && !dead)
+        if (GameManager._enemies.Count > 0 && !dead)
         {
             Debug.Log("Ha llegado al objetivo");
-            Spawner.enemies.RemoveAt(0);
+            GameManager._enemies.Remove(this.gameObject);
             Destroy(this.gameObject);
-            Debug.Log("Enemigos restantes: " + Spawner.enemies.Count);
+            Debug.Log("Enemigos restantes: " + GameManager._enemies.Count);
             dead = true;
 
             GameManager.Instance.QuitaVidas((int)(GetComponent<Enemigo>().tipoEnem + 1));

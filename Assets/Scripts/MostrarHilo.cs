@@ -40,7 +40,7 @@ public class MostrarHilo : MonoBehaviour
     {
         //KeyDown en vez de Key a secas ya que no queremos que se est� calculando el A* todo el rato mientras se pulse espacio
         //si no que s�lo una vez al principio
-        if (Spawner.enemies.Count > 0)
+        if (GameManager._enemies.Count > 0)
         {
             if (spawner == null)
             {
@@ -54,9 +54,9 @@ public class MostrarHilo : MonoBehaviour
                     Debug.Log("Pilla Inicio");
                 }
 
-                if (Spawner.enemies[0] != null)
+                if (GameManager._enemies[0] != null)
                 {
-                    movimientoTeseo = Spawner.enemies[0].GetComponent<EnemyMovement>();
+                    movimientoTeseo = GameManager._enemies[0].GetComponent<EnemyMovement>();
                     if (movimientoTeseo != null) Debug.Log("Movimiento cogido");
                 }
 

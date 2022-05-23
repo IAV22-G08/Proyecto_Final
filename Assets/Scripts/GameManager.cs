@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     private static GameManager _instance;
     public static List<GameObject> _towers;
+    public static List<GameObject> _enemies;
+
     public UIManager _myUIManager;
     private int dinerete;
     private int vidas;
@@ -85,8 +87,9 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         _towers = new List<GameObject>();
+        _enemies = new List<GameObject>();
         Debug.Log("Start GameManager");
-        dinerete = 200;
+        dinerete = 250;
         vidas = 100;
         round = 0;
         enemigosMuertos = 0;

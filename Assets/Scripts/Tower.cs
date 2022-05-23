@@ -170,7 +170,7 @@ public class Tower : MonoBehaviour
                 proyectilADisparar = proyectilPesado;
                 velAUsar *= 0.3f;
                 velPredecir *= 0.3f;
-                timepoRecargaActual *= 1.5f;
+                timepoRecargaActual *= 2.5f;
             }
             else if(tipoFlecha == TipoFlecha.LIGERA)
             {
